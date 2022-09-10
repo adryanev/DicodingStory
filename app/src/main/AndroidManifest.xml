@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="dev.adryanev.dicodingstory">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".app.StoryApplication"
         android:allowBackup="true"
