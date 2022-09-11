@@ -17,8 +17,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class NetworkModule {
-
+object NetworkModule {
 
     @Singleton
     @Provides
@@ -30,10 +29,11 @@ class NetworkModule {
     @Singleton
     @Provides
     @AuthInterceptorOkHttp
-    fun provideOkHttpWithAuth(): OkHttpClient = OkHttpClient.Builder()
-        .addInterceptor(AuthInterceptor())
-        .addNetworkInterceptor(StethoInterceptor())
-        .build()
+    fun provideOkHttpWithAuth(authInterceptor: AuthInterceptor): OkHttpClient =
+        OkHttpClient.Builder()
+            .addInterceptor(authInterceptor)
+            .addNetworkInterceptor(StethoInterceptor())
+            .build()
 
     @Singleton
     @Provides
