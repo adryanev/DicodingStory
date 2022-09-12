@@ -7,6 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.adryanev.dicodingstory.core.di.annotations.AuthInterceptorOkHttp
+import dev.adryanev.dicodingstory.core.di.annotations.AuthRetrofit
 import dev.adryanev.dicodingstory.core.di.annotations.NonAuthInterceptorOkHttp
 import dev.adryanev.dicodingstory.core.di.annotations.NonAuthRetrofit
 import dev.adryanev.dicodingstory.core.networks.interceptors.AuthInterceptor
@@ -40,6 +41,18 @@ object NetworkModule {
     @NonAuthRetrofit
     fun provideRetrofitWithoutAuthInterceptor(
         @NonAuthInterceptorOkHttp okHttp: OkHttpClient,
+        moshi: Moshi
+    ): Retrofit =
+        Retrofit.Builder()
+            .client(okHttp)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .build()
+
+    @Singleton
+    @Provides
+    @AuthRetrofit
+    fun provideRetrofitWithAuthInterceptor(
+        @AuthInterceptorOkHttp okHttp: OkHttpClient,
         moshi: Moshi
     ): Retrofit =
         Retrofit.Builder()
