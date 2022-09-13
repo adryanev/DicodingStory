@@ -1,6 +1,7 @@
 package dev.adryanev.dicodingstory.core.di
 
 import com.facebook.stetho.okhttp3.StethoInterceptor
+import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -11,6 +12,7 @@ import dev.adryanev.dicodingstory.core.di.annotations.NonAuthInterceptorOkHttp
 import dev.adryanev.dicodingstory.core.di.annotations.PrivateRetrofit
 import dev.adryanev.dicodingstory.core.di.annotations.PublicRetrofit
 import dev.adryanev.dicodingstory.core.networks.interceptors.AuthInterceptor
+import dev.adryanev.dicodingstory.core.networks.models.ErrorResponse
 import dev.adryanev.dicodingstory.core.utils.NetworkConstants
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -62,6 +64,11 @@ object NetworkModule {
             .baseUrl(NetworkConstants.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
-    
+
+    @Singleton
+    @Provides
+    fun provideErrorJsonAdapter(moshi: Moshi): JsonAdapter<ErrorResponse> =
+        moshi.adapter(ErrorResponse::class.java)
+
 }
 

@@ -21,4 +21,5 @@ abstract class BindingModule {
     @Singleton
     @Binds
     abstract fun bindResourceProvider(resourceProviderImpl: ResourceProviderImpl): ResourceProvider
+    
 }
