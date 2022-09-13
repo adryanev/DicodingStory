@@ -7,10 +7,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.adryanev.dicodingstory.core.di.annotations.AuthInterceptorOkHttp
-import dev.adryanev.dicodingstory.core.di.annotations.AuthRetrofit
 import dev.adryanev.dicodingstory.core.di.annotations.NonAuthInterceptorOkHttp
-import dev.adryanev.dicodingstory.core.di.annotations.NonAuthRetrofit
+import dev.adryanev.dicodingstory.core.di.annotations.PrivateRetrofit
+import dev.adryanev.dicodingstory.core.di.annotations.PublicRetrofit
 import dev.adryanev.dicodingstory.core.networks.interceptors.AuthInterceptor
+import dev.adryanev.dicodingstory.core.utils.NetworkConstants
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -38,26 +39,29 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    @NonAuthRetrofit
-    fun provideRetrofitWithoutAuthInterceptor(
+    @PublicRetrofit
+    fun providePublicRetrofit(
         @NonAuthInterceptorOkHttp okHttp: OkHttpClient,
         moshi: Moshi
     ): Retrofit =
         Retrofit.Builder()
             .client(okHttp)
+            .baseUrl(NetworkConstants.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
 
     @Singleton
     @Provides
-    @AuthRetrofit
-    fun provideRetrofitWithAuthInterceptor(
+    @PrivateRetrofit
+    fun providePrivateRetrofit(
         @AuthInterceptorOkHttp okHttp: OkHttpClient,
         moshi: Moshi
     ): Retrofit =
         Retrofit.Builder()
             .client(okHttp)
+            .baseUrl(NetworkConstants.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
+    
 }
 

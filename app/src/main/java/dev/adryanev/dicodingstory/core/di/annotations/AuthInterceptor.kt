@@ -12,8 +12,8 @@ annotation class NonAuthInterceptorOkHttp
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class AuthRetrofit
+annotation class PrivateRetrofit
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class NonAuthRetrofit
+annotation class PublicRetrofit
