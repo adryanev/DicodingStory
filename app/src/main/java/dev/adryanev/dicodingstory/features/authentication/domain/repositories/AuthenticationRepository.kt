@@ -5,9 +5,10 @@ import dev.adryanev.dicodingstory.features.authentication.domain.entities.Regist
 import dev.adryanev.dicodingstory.features.authentication.domain.entities.User
 import dev.adryanev.functional_programming.Either
 import dev.adryanev.functional_programming.Failure
+import kotlinx.coroutines.flow.Flow
 
 interface AuthenticationRepository {
 
-    suspend fun login(loginForm: LoginForm) : Either<Failure, User>
-    suspend fun register(registerForm: RegisterForm): Either<Failure, Unit>
+    suspend fun login(loginForm: LoginForm) : Flow<Either<Failure, User>>
+    suspend fun register(registerForm: RegisterForm): Flow<Either<Failure, Unit>>
 }

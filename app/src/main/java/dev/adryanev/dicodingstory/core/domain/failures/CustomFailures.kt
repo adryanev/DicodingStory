@@ -8,5 +8,5 @@ object TimeOutFailure : Failure.CustomFailure()
 object SslFailure : Failure.CustomFailure()
 
 class DatabaseFailure(val message: String) : Failure.CustomFailure()
-object SharedPreferenceFailure : Failure.CustomFailure()
+class SharedPreferenceFailure(val message: String) : Failure.CustomFailure()
 object ServiceFailure : Failure.CustomFailure()
