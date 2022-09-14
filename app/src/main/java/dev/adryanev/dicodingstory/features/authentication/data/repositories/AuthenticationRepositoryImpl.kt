@@ -1,6 +1,7 @@
 package dev.adryanev.dicodingstory.features.authentication.data.repositories
 
 import dev.adryanev.dicodingstory.core.di.annotations.IoDispatcher
+import dev.adryanev.dicodingstory.features.authentication.data.datasources.local.AuthenticationLocalDataSource
 import dev.adryanev.dicodingstory.features.authentication.data.datasources.networks.AuthenticationRemoteDataSource
 import dev.adryanev.dicodingstory.features.authentication.data.models.login.LoginPayload
 import dev.adryanev.dicodingstory.features.authentication.data.models.login.toDomain
@@ -19,6 +20,7 @@ import javax.inject.Inject
 
 class AuthenticationRepositoryImpl @Inject constructor(
     private val authenticationRemoteDataSource: AuthenticationRemoteDataSource,
+    private val authenticationLocalDataSource: AuthenticationLocalDataSource,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : AuthenticationRepository {
 
@@ -27,7 +29,17 @@ class AuthenticationRepositoryImpl @Inject constructor(
             val result =
                 authenticationRemoteDataSource.loginUser(LoginPayload.fromDomain(loginForm))
             val user = result.coMapSuccess { data -> data.loginResult?.toDomain()!! }
-            
+
+            if (!result.isError) {
+                val save =
+                    authenticationLocalDataSource
+                        .saveLoginData(result.getSuccessOrNull()?.loginResult!!)
+                if (save.isError) {
+                    val err = save.getFailureOrNull()!!
+                    emit(Either.Error(err))
+                    return@flow
+                }
+            }
             emit(user)
         }.flowOn(ioDispatcher)
     }
@@ -35,9 +47,25 @@ class AuthenticationRepositoryImpl @Inject constructor(
     override suspend fun register(registerForm: RegisterForm): Flow<Either<Failure, Unit>> {
         return flow {
             emit(
-                authenticationRemoteDataSource.registerUser(RegisterPayload.fromDomain(registerForm))
-                    .coMapSuccess { })
+                authenticationRemoteDataSource
+                    .registerUser(RegisterPayload.fromDomain(registerForm))
+                    .coMapSuccess { }
+            )
+        }.flowOn(ioDispatcher)
+    }
 
+    override suspend fun logout(): Flow<Either<Failure, Unit>> {
+        return flow {
+            emit(authenticationLocalDataSource.removeLoginData().coMapSuccess { })
+        }.flowOn(ioDispatcher)
+    }
+
+    override suspend fun getLoggedInUser(): Flow<Either<Failure, User>> {
+        return flow {
+            val user = authenticationLocalDataSource.getLoginData().coMapSuccess {
+                it.let { user -> user?.toDomain()!! }
+            }
+            emit(user)
 
         }.flowOn(ioDispatcher)
     }

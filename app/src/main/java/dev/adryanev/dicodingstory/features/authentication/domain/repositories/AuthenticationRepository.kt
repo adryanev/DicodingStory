@@ -11,4 +11,6 @@ interface AuthenticationRepository {
 
     suspend fun login(loginForm: LoginForm) : Flow<Either<Failure, User>>
     suspend fun register(registerForm: RegisterForm): Flow<Either<Failure, Unit>>
+    suspend fun logout(): Flow<Either<Failure, Unit>>
+    suspend fun getLoggedInUser(): Flow<Either<Failure, User>>
 }
