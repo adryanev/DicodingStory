@@ -60,10 +60,10 @@ class AuthenticationRepositoryImpl @Inject constructor(
         }.flowOn(ioDispatcher)
     }
 
-    override suspend fun getLoggedInUser(): Flow<Either<Failure, User>> {
+    override suspend fun getLoggedInUser(): Flow<Either<Failure, User?>> {
         return flow {
             val user = authenticationLocalDataSource.getLoginData().coMapSuccess {
-                it.let { user -> user?.toDomain()!! }
+                it.let { user -> user?.toDomain() }
             }
             emit(user)
 

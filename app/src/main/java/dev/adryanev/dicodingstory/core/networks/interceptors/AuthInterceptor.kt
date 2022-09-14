@@ -1,15 +1,18 @@
 package dev.adryanev.dicodingstory.core.networks.interceptors
 
 import android.content.SharedPreferences
+import com.squareup.moshi.Moshi
 import dev.adryanev.dicodingstory.core.utils.PreferenceConstants
+import dev.adryanev.dicodingstory.features.authentication.data.models.login.LoginResult
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class AuthInterceptor @Inject constructor(private val preference: SharedPreferences) : Interceptor {
+class AuthInterceptor @Inject constructor(
+    private val preference: SharedPreferences,
+    private val moshi: Moshi
+) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
 
@@ -25,6 +28,9 @@ class AuthInterceptor @Inject constructor(private val preference: SharedPreferen
     }
 
     private fun getUserToken(): String? {
-        return preference.getString(PreferenceConstants.TOKEN_KEY, "")
+        val data = preference.getString(PreferenceConstants.USER, "")
+        val adapter = moshi.adapter(LoginResult::class.java)
+        val user = data?.let { adapter.fromJson(it) }
+        return user?.token
     }
 }
