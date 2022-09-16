@@ -1,7 +1,7 @@
 package dev.adryanev.dicodingstory.core.domain.usecases
 
-import dev.adryanev.functional_programming.Either
-import dev.adryanev.functional_programming.Failure
+import arrow.core.Either
+import dev.adryanev.dicodingstory.core.domain.failures.Failure
 import kotlinx.coroutines.flow.Flow
 
 abstract class UseCase<ResultType, Params> {
@@ -9,4 +9,4 @@ abstract class UseCase<ResultType, Params> {
     abstract suspend operator fun invoke(params: Params): Flow<Either<Failure, ResultType>>
 }
 
-class NoParams
+object NoParams

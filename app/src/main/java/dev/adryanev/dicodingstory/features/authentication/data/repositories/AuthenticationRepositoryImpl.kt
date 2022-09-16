@@ -1,6 +1,9 @@
 package dev.adryanev.dicodingstory.features.authentication.data.repositories
 
+import arrow.core.Either
 import dev.adryanev.dicodingstory.core.di.annotations.IoDispatcher
+import dev.adryanev.dicodingstory.core.domain.failures.Failure
+import dev.adryanev.dicodingstory.core.domain.failures.SharedPreferenceFailure
 import dev.adryanev.dicodingstory.features.authentication.data.datasources.local.AuthenticationLocalDataSource
 import dev.adryanev.dicodingstory.features.authentication.data.datasources.networks.AuthenticationRemoteDataSource
 import dev.adryanev.dicodingstory.features.authentication.data.models.login.LoginPayload
@@ -10,8 +13,6 @@ import dev.adryanev.dicodingstory.features.authentication.domain.entities.LoginF
 import dev.adryanev.dicodingstory.features.authentication.domain.entities.RegisterForm
 import dev.adryanev.dicodingstory.features.authentication.domain.entities.User
 import dev.adryanev.dicodingstory.features.authentication.domain.repositories.AuthenticationRepository
-import dev.adryanev.functional_programming.Either
-import dev.adryanev.functional_programming.Failure
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -28,15 +29,16 @@ class AuthenticationRepositoryImpl @Inject constructor(
         return flow {
             val result =
                 authenticationRemoteDataSource.loginUser(LoginPayload.fromDomain(loginForm))
-            val user = result.coMapSuccess { data -> data.loginResult?.toDomain()!! }
+            val user = result.map { data -> data.loginResult?.toDomain()!! }
 
-            if (!result.isError) {
+            if (!result.isLeft()) {
                 val save =
                     authenticationLocalDataSource
-                        .saveLoginData(result.getSuccessOrNull()?.loginResult!!)
-                if (save.isError) {
-                    val err = save.getFailureOrNull()!!
-                    emit(Either.Error(err))
+                        .saveLoginData(result.orNull()?.loginResult!!)
+                if (save.isLeft()) {
+                    emit(user.mapLeft {
+                        SharedPreferenceFailure(message = "Cannot Set Shared Preferences")
+                    })
                     return@flow
                 }
             }
@@ -49,20 +51,20 @@ class AuthenticationRepositoryImpl @Inject constructor(
             emit(
                 authenticationRemoteDataSource
                     .registerUser(RegisterPayload.fromDomain(registerForm))
-                    .coMapSuccess { }
+                    .map { }
             )
         }.flowOn(ioDispatcher)
     }
 
     override suspend fun logout(): Flow<Either<Failure, Unit>> {
         return flow {
-            emit(authenticationLocalDataSource.removeLoginData().coMapSuccess { })
+            emit(authenticationLocalDataSource.removeLoginData().map { })
         }.flowOn(ioDispatcher)
     }
 
     override suspend fun getLoggedInUser(): Flow<Either<Failure, User?>> {
         return flow {
-            val user = authenticationLocalDataSource.getLoginData().coMapSuccess {
+            val user = authenticationLocalDataSource.getLoginData().map {
                 it.let { user -> user?.toDomain() }
             }
             emit(user)

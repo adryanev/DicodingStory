@@ -1,15 +1,16 @@
 package dev.adryanev.dicodingstory.core.networks.middlewares.extensions
 
+//import dev.adryanev.functional_programming.Either
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import com.squareup.moshi.JsonAdapter
+import dev.adryanev.dicodingstory.core.domain.failures.Failure
 import dev.adryanev.dicodingstory.core.domain.failures.NetworkFailure
 import dev.adryanev.dicodingstory.core.domain.failures.SslFailure
 import dev.adryanev.dicodingstory.core.domain.failures.TimeOutFailure
 import dev.adryanev.dicodingstory.core.networks.middlewares.NetworkMiddleware
 import dev.adryanev.dicodingstory.core.networks.models.ErrorResponse
-import dev.adryanev.functional_programming.Either
-import dev.adryanev.functional_programming.Failure
-import dev.adryanev.functional_programming.extensions.toError
-import dev.adryanev.functional_programming.extensions.toSuccess
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import okio.BufferedSource
@@ -31,7 +32,7 @@ suspend inline fun <T> safeCall(
     adapter: JsonAdapter<ErrorResponse>,
     crossinline retrofitCall: suspend () -> T
 ): Either<Failure, T> {
-    return runMiddlewares(middlewares = middlewares)?.toError()
+    return runMiddlewares(middlewares = middlewares)?.left()
         ?: executeRetrofitCall(ioDispatcher, adapter, retrofitCall)
 }
 
@@ -53,9 +54,9 @@ suspend inline fun <T> executeRetrofitCall(
 ): Either<Failure, T> {
     return withContext(ioDispatcher) {
         try {
-            return@withContext retrofitCall().toSuccess()
+            return@withContext retrofitCall().right()
         } catch (e: Exception) {
-            return@withContext e.parseException(adapter).toError()
+            return@withContext e.parseException(adapter).left()
         }
     }
 }

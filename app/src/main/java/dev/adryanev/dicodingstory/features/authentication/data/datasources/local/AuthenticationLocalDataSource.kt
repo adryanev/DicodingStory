@@ -1,8 +1,8 @@
 package dev.adryanev.dicodingstory.features.authentication.data.datasources.local
 
+import arrow.core.Either
+import dev.adryanev.dicodingstory.core.domain.failures.Failure
 import dev.adryanev.dicodingstory.features.authentication.data.models.login.LoginResult
-import dev.adryanev.functional_programming.Either
-import dev.adryanev.functional_programming.Failure
 
 interface AuthenticationLocalDataSource {
 

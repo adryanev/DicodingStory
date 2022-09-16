@@ -1,4 +1,4 @@
-package dev.adryanev.functional_programming
+package dev.adryanev.dicodingstory.core.domain.failures
 
 sealed class Failure {
 

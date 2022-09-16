@@ -1,7 +1,9 @@
 package dev.adryanev.dicodingstory.features.authentication.data.datasources.networks
 
+import arrow.core.Either
 import com.squareup.moshi.JsonAdapter
 import dev.adryanev.dicodingstory.core.di.annotations.IoDispatcher
+import dev.adryanev.dicodingstory.core.domain.failures.Failure
 import dev.adryanev.dicodingstory.core.networks.middlewares.extensions.safeCall
 import dev.adryanev.dicodingstory.core.networks.middlewares.providers.MiddlewareProvider
 import dev.adryanev.dicodingstory.core.networks.models.ErrorResponse
@@ -10,8 +12,6 @@ import dev.adryanev.dicodingstory.features.authentication.data.models.login.Logi
 import dev.adryanev.dicodingstory.features.authentication.data.models.login.LoginResponse
 import dev.adryanev.dicodingstory.features.authentication.data.models.register.RegisterPayload
 import dev.adryanev.dicodingstory.features.authentication.data.models.register.RegisterResponse
-import dev.adryanev.functional_programming.Either
-import dev.adryanev.functional_programming.Failure
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 

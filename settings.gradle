@@ -14,4 +14,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "DicodingStory"
 include ':app'
-include ':functional-programming'
