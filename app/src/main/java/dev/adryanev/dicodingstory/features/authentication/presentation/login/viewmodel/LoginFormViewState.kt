@@ -1,4 +1,4 @@
-package dev.adryanev.dicodingstory.features.authentication.presentation.login.managers
+package dev.adryanev.dicodingstory.features.authentication.presentation.login.viewmodel
 
 import arrow.core.Either
 import arrow.core.Option
