@@ -48,9 +48,9 @@ class RegisterFormViewModel @Inject constructor(
         val email = _state.value.emailAddress
         val password = _state.value.password
 
-        if (name != null &&
-            email != null &&
-            password != null
+        if (name == null &&
+            email == null &&
+            password == null
         ) {
             return
         }
@@ -62,7 +62,7 @@ class RegisterFormViewModel @Inject constructor(
             val result = registerUser(
                 RegisterUserParams(
                     registerForm = RegisterForm(
-                        name= name!!,
+                        name = name!!,
                         emailAddress = email!!,
                         password = password!!
                     )
@@ -73,12 +73,13 @@ class RegisterFormViewModel @Inject constructor(
                 _state.value = _state.value.copy(
                     registerResult = Option.fromNullable(it)
                 )
+                _state.value = _state.value.copy(
+                    isLoading = false,
+                    registerResult = none()
+                )
             }
 
         }
-        _state.value = _state.value.copy(
-            isLoading = false,
-            registerResult = none()
-        )
+
     }
 }

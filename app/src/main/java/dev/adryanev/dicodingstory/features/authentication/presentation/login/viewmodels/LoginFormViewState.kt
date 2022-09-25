@@ -1,4 +1,4 @@
-package dev.adryanev.dicodingstory.features.authentication.presentation.login.viewmodel
+package dev.adryanev.dicodingstory.features.authentication.presentation.login.viewmodels
 
 import arrow.core.Either
 import arrow.core.Option
@@ -14,7 +14,6 @@ data class LoginFormViewState(
     val emailAddress: EmailAddress?,
     val password: Password?,
     val isLoading: Boolean,
-    val error: OneTimeEvent<Failure>?,
     val loginResult: Option<Either<Failure, User?>>
 ) : MviViewState {
 
@@ -23,7 +22,6 @@ data class LoginFormViewState(
             emailAddress = null,
             password = null,
             isLoading = false,
-            error = null,
             loginResult = none()
         )
     }

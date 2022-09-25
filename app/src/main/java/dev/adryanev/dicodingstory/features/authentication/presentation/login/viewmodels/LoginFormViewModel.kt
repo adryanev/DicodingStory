@@ -1,4 +1,4 @@
-package dev.adryanev.dicodingstory.features.authentication.presentation.login.viewmodel
+package dev.adryanev.dicodingstory.features.authentication.presentation.login.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,18 +21,18 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginFormViewModel @Inject constructor(
     private val logInUser: LogInUser,
-): ViewModel(), MviViewModel<LoginFormViewState> {
+) : ViewModel(), MviViewModel<LoginFormViewState> {
     private val _state = MutableStateFlow(LoginFormViewState.initial())
 
     override val state: StateFlow<LoginFormViewState>
         get() = _state.asStateFlow()
 
-    fun emailAddressChanged(email: String){
+    fun emailAddressChanged(email: String) {
         val emailAddress = EmailAddress(email)
         _state.value = _state.value.copy(emailAddress = emailAddress)
     }
 
-    fun passwordChanged(stringPassword: String){
+    fun passwordChanged(stringPassword: String) {
         val password = Password(stringPassword)
         _state.value = _state.value.copy(password = password)
     }
@@ -40,24 +40,29 @@ class LoginFormViewModel @Inject constructor(
     fun loginButtonPressed() {
         val email = _state.value.emailAddress
         val password = _state.value.password
-        if( email == null && password == null ) {
+        if (email == null && password == null) {
             return
         }
         _state.value = _state.value.copy(isLoading = true)
 
         viewModelScope.launch {
-            val result = logInUser(LogInUserParams(
-                LoginForm(emailAddress = email!!, password = password!!)
-            ))
+            val result = logInUser(
+                LogInUserParams(
+                    LoginForm(emailAddress = email!!, password = password!!)
+                )
+            )
             result.collectLatest {
                 _state.value =
-                    _state.value.copy(loginResult =  Option.fromNullable(it))
+                    _state.value.copy(
+                        loginResult = Option.fromNullable(it),
+                    )
+                _state.value =
+                    _state.value.copy(
+                        loginResult = none(),
+                        isLoading = false
+                    )
 
             }
         }
-        _state.value = _state.value.copy(
-            loginResult = none(),
-            isLoading = false
-        )
     }
 }
