@@ -6,8 +6,9 @@
     <string name="action_sign_in">Masuk atau Daftar</string>
     <string name="action_sign_in_short">Masuk</string>
     <string name="welcome">Selamat Datang!</string>
-    <string name="invalid_username">Username tidak valid</string>
+    <string name="invalid_email">Email tidak valid</string>
     <string name="invalid_password">Password harus >5 karakter</string>
     <string name="login_failed">Gagal Login</string>
     <string name="no_internet_connection">Tidak ada koneksi internet</string>
+    <string name="empty_email">Email tidak boleh kosong</string>
 </resources>

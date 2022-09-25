@@ -1,13 +1,12 @@
 package dev.adryanev.dicodingstory.features.authentication.presentation.login
 
+import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.util.Patterns
+import dev.adryanev.dicodingstory.R
 import dev.adryanev.dicodingstory.data.LoginRepository
 import dev.adryanev.dicodingstory.data.Result
-
-import dev.adryanev.dicodingstory.R
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 
@@ -31,7 +30,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {
-            _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
+            _loginForm.value = LoginFormState(usernameError = R.string.invalid_email)
         } else if (!isPasswordValid(password)) {
             _loginForm.value = LoginFormState(passwordError = R.string.invalid_password)
         } else {
