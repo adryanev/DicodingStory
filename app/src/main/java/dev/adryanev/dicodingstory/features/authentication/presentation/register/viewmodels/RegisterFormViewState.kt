@@ -1,4 +1,4 @@
-package dev.adryanev.dicodingstory.features.authentication.presentation.register
+package dev.adryanev.dicodingstory.features.authentication.presentation.register.viewmodels
 
 import arrow.core.Either
 import arrow.core.Option
@@ -14,7 +14,7 @@ data class RegisterFormViewState(
     val password: Password?,
     val isLoading: Boolean,
     val registerResult: Option<Either<Failure, Unit>>
-): MviViewState {
+) : MviViewState {
     companion object {
         fun initial(): RegisterFormViewState = RegisterFormViewState(
             name = null,

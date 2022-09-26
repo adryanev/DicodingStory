@@ -23,7 +23,6 @@ class SplashViewModel @Inject constructor(
     override val state: StateFlow<SplashViewState>
         get() = _state.asStateFlow()
 
-
     fun checkIsLoggedIn() {
         _state.value = _state.value.copy(isLoading = true)
 

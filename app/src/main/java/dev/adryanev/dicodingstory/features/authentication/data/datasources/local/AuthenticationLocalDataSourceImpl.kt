@@ -9,6 +9,7 @@ import dev.adryanev.dicodingstory.core.domain.failures.Failure
 import dev.adryanev.dicodingstory.core.domain.failures.SharedPreferenceFailure
 import dev.adryanev.dicodingstory.core.utils.PreferenceConstants
 import dev.adryanev.dicodingstory.features.authentication.data.models.login.LoginResult
+import timber.log.Timber
 
 import javax.inject.Inject
 
@@ -30,6 +31,7 @@ class AuthenticationLocalDataSourceImpl @Inject constructor(
 
             Unit.right()
         } catch (exception: Exception) {
+            Timber.e(exception)
             Either.Left(SharedPreferenceFailure("Cannot save data to shared preference"))
         }
 
@@ -42,19 +44,24 @@ class AuthenticationLocalDataSourceImpl @Inject constructor(
             }
             Either.Right(Unit)
         } catch (exception: Exception) {
+            Timber.e(exception)
             Either.Left(SharedPreferenceFailure("Cannot clear Shared Preference data"))
         }
     }
 
     override suspend fun getLoginData(): Either<Failure, LoginResult?> {
-        return try {
+        try {
             val adapter = moshi.adapter(LoginResult::class.java)
-            val data = sharedPreferences.getString(PreferenceConstants.USER, "")
+            val data =
+                sharedPreferences.getString(PreferenceConstants.USER, "")
+            if (data?.isEmpty() == true) return Either.Right(null)
             val user = data?.let { adapter.fromJson(it) }
-            Either.Right(user)
+
+            return Either.Right(user)
 
         } catch (exception: Exception) {
-            Either.Left(SharedPreferenceFailure("Cannot get data from sharedPreference"))
+            Timber.e(exception)
+            return Either.Left(SharedPreferenceFailure("Cannot get data from sharedPreference"))
         }
     }
 }

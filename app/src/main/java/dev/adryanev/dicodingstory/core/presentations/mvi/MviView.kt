@@ -1,7 +1,5 @@
 package dev.adryanev.dicodingstory.core.presentations.mvi
 
-import kotlinx.coroutines.flow.Flow
-
 /**
  * Object representing a UI that will
  * a) emit its intents to a view model,
@@ -9,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
  *
  * @param S Top class of the [MviViewState] the [MviView] will be subscribing to.
  */
-interface MviView< in S : MviViewState> {
+interface MviView<in S : MviViewState> {
     /**
      * Entry point for the [MviView] to render itself based on a [MviViewState].
      */

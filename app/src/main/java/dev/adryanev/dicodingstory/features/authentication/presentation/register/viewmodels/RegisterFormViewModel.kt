@@ -1,4 +1,4 @@
-package dev.adryanev.dicodingstory.features.authentication.presentation.register
+package dev.adryanev.dicodingstory.features.authentication.presentation.register.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
