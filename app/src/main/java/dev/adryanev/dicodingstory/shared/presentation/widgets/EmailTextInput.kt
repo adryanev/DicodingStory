@@ -12,10 +12,13 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import dev.adryanev.dicodingstory.R
+import dev.adryanev.dicodingstory.core.utils.OnTextChangedCallback
 
 class EmailTextInput : AppCompatEditText, View.OnTouchListener {
 
     private lateinit var clearButtonImage: Drawable
+    private lateinit var onTextChangedCallback: OnTextChangedCallback
+
 
     constructor(context: Context) : super(context) {
         init()
@@ -63,7 +66,11 @@ class EmailTextInput : AppCompatEditText, View.OnTouchListener {
                 val valid = email?.let { android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches() }
                 if (valid == false) {
                     error = resources.getString(R.string.invalid_email)
+                    return
                 }
+
+                onTextChangedCallback(email!!)
+
             }
 
         })
@@ -71,6 +78,13 @@ class EmailTextInput : AppCompatEditText, View.OnTouchListener {
 
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
         return false
+    }
+
+    /**
+     * Should Be called first after binding
+     */
+    fun setOnTextChangeCallback(onTextChangedCallback: OnTextChangedCallback) {
+        this.onTextChangedCallback = onTextChangedCallback
     }
 
     private fun showClearButton() {

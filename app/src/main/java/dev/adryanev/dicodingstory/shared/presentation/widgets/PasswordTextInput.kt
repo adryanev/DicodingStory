@@ -12,10 +12,12 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import dev.adryanev.dicodingstory.R
+import dev.adryanev.dicodingstory.core.utils.OnTextChangedCallback
 
 class PasswordTextInput : AppCompatEditText {
 
     private lateinit var passwordIcon: Drawable
+    private lateinit var onTextChangedCallback: OnTextChangedCallback
 
     constructor(context: Context) : super(context) {
         init()
@@ -64,7 +66,11 @@ class PasswordTextInput : AppCompatEditText {
             override fun afterTextChanged(s: Editable?) {
                 if (!s.isNullOrEmpty() && s.length < 6) {
                     error = resources.getString(R.string.invalid_password)
+                    return
                 }
+                val password = s.toString()
+                onTextChangedCallback(password)
+
             }
 
         })
@@ -78,5 +84,9 @@ class PasswordTextInput : AppCompatEditText {
         bottom: Drawable? = null,
     ) {
         setCompoundDrawablesWithIntrinsicBounds(start, top, end, bottom)
+    }
+
+    fun setOnTextChangedCallback(callback: OnTextChangedCallback){
+        this.onTextChangedCallback = callback
     }
 }

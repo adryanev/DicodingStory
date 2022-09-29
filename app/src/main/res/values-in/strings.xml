@@ -17,5 +17,6 @@
     <string name="register">Daftar</string>
     <string name="create_your_account">Buat akun anda</string>
     <string name="full_name">Nama Lengkap</string>
+    <string name="empty_name">Nama tidak boleh kosong</string>
 
 </resources>

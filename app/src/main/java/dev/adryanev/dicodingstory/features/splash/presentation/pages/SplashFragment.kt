@@ -31,9 +31,9 @@ class SplashFragment : Fragment(), MviView<SplashViewState> {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentSplashBinding.inflate(inflater, container, false)
-        return _binding?.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,26 +45,22 @@ class SplashFragment : Fragment(), MviView<SplashViewState> {
 
     private fun collectUiState() {
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            viewModel.state.collect { state ->
-                render(state)
-            }
+            viewModel.state.collect(::render)
         }
     }
 
     override fun render(state: SplashViewState) {
-        Timber.d("render method called")
         state.checkLoginOrFailure.fold(
             {
-                Timber.d("none called")
             },
             { either ->
                 either.fold(
                     { failure ->
-                        Timber.d("Failure occured")
+                        Timber.i("Failure occurred: $failure")
                         requireContext().handleError(failure)
                     },
                     { user ->
-                        Timber.d("success fetch shared preferences")
+                        Timber.i("success fetch shared preferences")
                         Handler(Looper.getMainLooper()).postDelayed({
                             if (user != null) {
                                 navigateToStory()
@@ -91,6 +87,7 @@ class SplashFragment : Fragment(), MviView<SplashViewState> {
     }
 
     private fun navigate(action: NavDirections) {
+        Timber.i("Navigate to ${action.actionId}")
         findNavController().navigate(action)
     }
 
