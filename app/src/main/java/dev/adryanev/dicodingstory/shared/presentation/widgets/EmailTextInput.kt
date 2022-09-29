@@ -36,7 +36,7 @@ class EmailTextInput : AppCompatEditText, View.OnTouchListener {
     private fun init() {
         clearButtonImage =
             ContextCompat.getDrawable(context, R.drawable.ic_baseline_close_24) as Drawable
-
+        clearButtonImage.setTint(ContextCompat.getColor(context, R.color.primaryTextColor))
         inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
         hint = resources.getString(R.string.prompt_email)
         setOnTouchListener(this)
@@ -55,7 +55,7 @@ class EmailTextInput : AppCompatEditText, View.OnTouchListener {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if(!s.isNullOrEmpty()){
+                if (!s.isNullOrEmpty()) {
                     error = resources.getString(R.string.empty_email)
                     return
                 }

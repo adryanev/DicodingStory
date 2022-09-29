@@ -11,4 +11,11 @@
     <string name="login_failed">Gagal Login</string>
     <string name="no_internet_connection">Tidak ada koneksi internet</string>
     <string name="empty_email">Email tidak boleh kosong</string>
+    <string name="please_login_to_continue">Silahkan masuk untuk melanjutkan</string>
+    <string name="not_registered_create_account">Belum terdaftar? Buat akun</string>
+    <string name="login">Masuk</string>
+    <string name="register">Daftar</string>
+    <string name="create_your_account">Buat akun anda</string>
+    <string name="full_name">Nama Lengkap</string>
+
 </resources>

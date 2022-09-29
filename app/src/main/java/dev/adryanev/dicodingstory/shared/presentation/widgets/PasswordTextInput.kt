@@ -3,6 +3,7 @@ package dev.adryanev.dicodingstory.shared.presentation.widgets
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
@@ -45,7 +46,11 @@ class PasswordTextInput : AppCompatEditText {
         compoundDrawablePadding = 16
 
         hint = resources.getString(R.string.prompt_password)
-        setAutofillHints(resources.getString(R.string.prompt_password))
+        passwordIcon.setTint(ContextCompat.getColor(context, R.color.primaryTextColor))
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setAutofillHints(resources.getString(R.string.prompt_password))
+        }
 
         setDrawable(passwordIcon)
 
