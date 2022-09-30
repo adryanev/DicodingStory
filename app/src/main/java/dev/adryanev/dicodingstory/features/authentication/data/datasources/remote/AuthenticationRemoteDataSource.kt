@@ -1,4 +1,4 @@
-package dev.adryanev.dicodingstory.features.authentication.data.datasources.networks
+package dev.adryanev.dicodingstory.features.authentication.data.datasources.remote
 
 import arrow.core.Either
 import dev.adryanev.dicodingstory.core.domain.failures.Failure

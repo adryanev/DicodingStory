@@ -9,6 +9,7 @@ plugins {
 
 android {
     compileSdk 33
+    namespace "dev.adryanev.dicodingstory"
 
     defaultConfig {
         applicationId "dev.adryanev.dicodingstory"
@@ -27,6 +28,7 @@ android {
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled = true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -43,7 +45,8 @@ android {
 }
 
 dependencies {
-//    implementation project(':functional-programming')
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
+
     //KTX
     implementation 'androidx.core:core-ktx:1.9.0'
 
@@ -70,6 +73,9 @@ dependencies {
 
     //Network
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
 
     //JSON Serializable

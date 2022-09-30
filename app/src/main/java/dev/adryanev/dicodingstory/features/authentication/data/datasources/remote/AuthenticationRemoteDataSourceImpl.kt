@@ -1,4 +1,4 @@
-package dev.adryanev.dicodingstory.features.authentication.data.datasources.networks
+package dev.adryanev.dicodingstory.features.authentication.data.datasources.remote
 
 import arrow.core.Either
 import com.squareup.moshi.JsonAdapter
@@ -7,7 +7,7 @@ import dev.adryanev.dicodingstory.core.domain.failures.Failure
 import dev.adryanev.dicodingstory.core.networks.middlewares.extensions.safeCall
 import dev.adryanev.dicodingstory.core.networks.middlewares.providers.MiddlewareProvider
 import dev.adryanev.dicodingstory.core.networks.models.ErrorResponse
-import dev.adryanev.dicodingstory.features.authentication.data.datasources.networks.services.AuthenticationService
+import dev.adryanev.dicodingstory.features.authentication.data.datasources.remote.services.AuthenticationService
 import dev.adryanev.dicodingstory.features.authentication.data.models.login.LoginPayload
 import dev.adryanev.dicodingstory.features.authentication.data.models.login.LoginResponse
 import dev.adryanev.dicodingstory.features.authentication.data.models.register.RegisterPayload

@@ -10,10 +10,12 @@ import dev.adryanev.dicodingstory.core.utils.resource.ResourceProvider
 import dev.adryanev.dicodingstory.core.utils.resource.ResourceProviderImpl
 import dev.adryanev.dicodingstory.features.authentication.data.datasources.local.AuthenticationLocalDataSource
 import dev.adryanev.dicodingstory.features.authentication.data.datasources.local.AuthenticationLocalDataSourceImpl
-import dev.adryanev.dicodingstory.features.authentication.data.datasources.networks.AuthenticationRemoteDataSource
-import dev.adryanev.dicodingstory.features.authentication.data.datasources.networks.AuthenticationRemoteDataSourceImpl
+import dev.adryanev.dicodingstory.features.authentication.data.datasources.remote.AuthenticationRemoteDataSource
+import dev.adryanev.dicodingstory.features.authentication.data.datasources.remote.AuthenticationRemoteDataSourceImpl
 import dev.adryanev.dicodingstory.features.authentication.data.repositories.AuthenticationRepositoryImpl
 import dev.adryanev.dicodingstory.features.authentication.domain.repositories.AuthenticationRepository
+import dev.adryanev.dicodingstory.features.story.data.datasources.remote.StoryRemoteDataSource
+import dev.adryanev.dicodingstory.features.story.data.datasources.remote.StoryRemoteDataSourceImpl
 import javax.inject.Singleton
 
 @Module
@@ -29,8 +31,7 @@ abstract class BindingModule {
     abstract fun bindResourceProvider(resourceProviderImpl: ResourceProviderImpl): ResourceProvider
 
 
-    // AUTHENTICATION BINDINGS
-
+    // =====================AUTHENTICATION BINDINGS========================
     @Singleton
     @Binds
     abstract fun bindAuthenticationRemoteSource(
@@ -48,4 +49,11 @@ abstract class BindingModule {
     abstract fun bindAuthenticationRepository(
         authenticationRepositoryImpl: AuthenticationRepositoryImpl
     ): AuthenticationRepository
+
+    // =====================STORY BINDINGS========================
+    @Singleton
+    @Binds
+    abstract fun bindStoryRemoteSource(
+        storyRemoteDataSource: StoryRemoteDataSourceImpl
+    ): StoryRemoteDataSource
 }

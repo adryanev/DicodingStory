@@ -1,4 +1,4 @@
-package dev.adryanev.dicodingstory.features.authentication.data.datasources.networks.services
+package dev.adryanev.dicodingstory.features.authentication.data.datasources.remote.services
 
 import dev.adryanev.dicodingstory.features.authentication.data.models.login.LoginPayload
 import dev.adryanev.dicodingstory.features.authentication.data.models.login.LoginResponse
