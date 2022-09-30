@@ -37,10 +37,12 @@ class LoginFragment : Fragment(), MviView<LoginFormViewState> {
         binding.apply {
             loginEmailInput.setOnTextChangeCallback {
                 Timber.d("Email: $it")
+                if (it.isEmpty()) return@setOnTextChangeCallback
                 viewModel.emailAddressChanged(it)
             }
             loginPasswordInput.setOnTextChangedCallback {
                 Timber.d("Password: $it")
+                if (it.isEmpty() || it.length < 6) return@setOnTextChangedCallback
                 viewModel.passwordChanged(it)
             }
             loginLoginButton.setOnClickListener {

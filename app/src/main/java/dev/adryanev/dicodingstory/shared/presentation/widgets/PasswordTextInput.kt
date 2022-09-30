@@ -56,7 +56,7 @@ class PasswordTextInput : TextInputEditText {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if (s.isNullOrEmpty() || s.length < 8) {
+                if (s.isNullOrEmpty() || s.length < 6) {
                     error = resources.getString(R.string.invalid_password)
                     return
                 }

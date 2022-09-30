@@ -37,19 +37,21 @@ class RegisterFragment : Fragment(), MviView<RegisterFormViewState> {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
         binding.apply {
             registerEmailInput.setOnTextChangeCallback {
+                Timber.d("Email: $it")
+                if (it.isEmpty()) return@setOnTextChangeCallback
                 viewModel.emailAddressChanged(it)
             }
             registerPasswordInput.setOnTextChangedCallback {
+                Timber.d("Password: $it")
+                if (it.isEmpty() || it.length < 6) return@setOnTextChangedCallback
                 viewModel.passwordChanged(it)
             }
             registerNameInput.doAfterTextChanged { text ->
                 if (text.isNullOrEmpty()) {
                     registerNameInput.error = requireContext().getString(R.string.empty_name)
-
-                } else {
-                    viewModel.nameChanged(text.toString())
+                    return@doAfterTextChanged
                 }
-
+                viewModel.nameChanged(text.toString())
             }
             registerButton.setOnClickListener {
                 viewModel.registerButtonPressed()

@@ -23,7 +23,7 @@ value class Password private constructor(private val value: String) {
 
     init {
         require(validatePasswordMinimumLength(this.value))
-        { "Password should be at least 8 characters" }
+        { "Password should be at least 6 characters" }
     }
 
     companion object {

@@ -6,7 +6,7 @@
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="invalid_email">Not a valid Email Address</string>
-    <string name="invalid_password">Password should be at least 8 characters</string>
+    <string name="invalid_password">Password should be at least 6 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="no_internet_connection">No Internet Connection</string>
     <string name="empty_email">Email cannot be empty</string>

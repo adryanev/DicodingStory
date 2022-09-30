@@ -28,14 +28,12 @@ class LoginFormViewModel @Inject constructor(
         get() = _state.asStateFlow()
 
     fun emailAddressChanged(email: String) {
-        if(email.isEmpty()) return
+        if (email.isEmpty()) return
         val emailAddress = EmailAddress(email)
         _state.value = _state.value.copy(emailAddress = emailAddress)
     }
 
     fun passwordChanged(stringPassword: String) {
-        if(stringPassword.isEmpty()) return
-        if(stringPassword.length < 8) return
         val password = Password(stringPassword)
         _state.value = _state.value.copy(password = password)
     }

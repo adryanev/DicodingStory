@@ -8,6 +8,6 @@ fun validateEmailAddress(value: String): Boolean {
 }
 
 fun validatePasswordMinimumLength(value: String): Boolean {
-    return value.length >= 8
+    return value.length >= 6
 }
 
