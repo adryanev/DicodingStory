@@ -12,12 +12,14 @@
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/loginFragment"
+            app:popUpTo="@id/splashFragment"
+            app:launchSingleTop="true"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_splashFragment_to_storyFragment"
             app:destination="@id/storyFragment"
-            app:popUpTo="@id/storyFragment"
+            app:popUpTo="@id/splashFragment"
+            app:launchSingleTop="true"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -35,7 +37,6 @@
     <fragment
         android:id="@+id/registerFragment"
         android:name="dev.adryanev.dicodingstory.features.authentication.presentation.register.pages.RegisterFragment"
-        android:label="fragment_register"
         tools:layout="@layout/fragment_register" />
     <fragment
         android:id="@+id/storyFragment"

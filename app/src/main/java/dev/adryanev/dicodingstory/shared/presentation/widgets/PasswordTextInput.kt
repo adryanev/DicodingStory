@@ -1,22 +1,18 @@
 package dev.adryanev.dicodingstory.shared.presentation.widgets
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
-import androidx.appcompat.widget.AppCompatEditText
-import androidx.core.content.ContextCompat
+import com.google.android.material.textfield.TextInputEditText
 import dev.adryanev.dicodingstory.R
 import dev.adryanev.dicodingstory.core.utils.OnTextChangedCallback
 
-class PasswordTextInput : AppCompatEditText {
+class PasswordTextInput : TextInputEditText {
 
-    private lateinit var passwordIcon: Drawable
     private lateinit var onTextChangedCallback: OnTextChangedCallback
 
     constructor(context: Context) : super(context) {
@@ -35,26 +31,22 @@ class PasswordTextInput : AppCompatEditText {
         init()
     }
 
-    override fun onDraw(canvas: Canvas?) {
-        transformationMethod = PasswordTransformationMethod.getInstance()
-        super.onDraw(canvas)
-    }
+//    override fun onDraw(canvas: Canvas?) {
+//        transformationMethod = PasswordTransformationMethod.getInstance()
+//        super.onDraw(canvas)
+//    }
 
     private fun init() {
 
-        passwordIcon =
-            ContextCompat.getDrawable(context, R.drawable.ic_baseline_password_24) as Drawable
         inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
         compoundDrawablePadding = 16
-
         hint = resources.getString(R.string.prompt_password)
-        passwordIcon.setTint(ContextCompat.getColor(context, R.color.primaryTextColor))
+        transformationMethod = PasswordTransformationMethod.getInstance()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             setAutofillHints(resources.getString(R.string.prompt_password))
         }
 
-        setDrawable(passwordIcon)
 
         addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -64,7 +56,7 @@ class PasswordTextInput : AppCompatEditText {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if (!s.isNullOrEmpty() && s.length < 6) {
+                if (s.isNullOrEmpty() || s.length < 8) {
                     error = resources.getString(R.string.invalid_password)
                     return
                 }
@@ -77,16 +69,7 @@ class PasswordTextInput : AppCompatEditText {
 
     }
 
-    private fun setDrawable(
-        start: Drawable? = null,
-        top: Drawable? = null,
-        end: Drawable? = null,
-        bottom: Drawable? = null,
-    ) {
-        setCompoundDrawablesWithIntrinsicBounds(start, top, end, bottom)
-    }
-
-    fun setOnTextChangedCallback(callback: OnTextChangedCallback){
+    fun setOnTextChangedCallback(callback: OnTextChangedCallback) {
         this.onTextChangedCallback = callback
     }
 }

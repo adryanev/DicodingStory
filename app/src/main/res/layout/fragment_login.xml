@@ -6,17 +6,33 @@
     android:layout_height="match_parent"
     tools:context=".features.authentication.presentation.login.pages.LoginFragment">
 
-    <dev.adryanev.dicodingstory.shared.presentation.widgets.EmailTextInput
-        android:id="@+id/login_email_input"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/login_email_input_layout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="32dp"
-        android:textSize="16sp"
+        app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_subtitle" />
+        app:layout_constraintTop_toBottomOf="@+id/login_subtitle"
+
+        >
+
+        <dev.adryanev.dicodingstory.shared.presentation.widgets.EmailTextInput
+            android:id="@+id/login_email_input_"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:textColorHint="#546E7A"
+            android:textSize="16sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <TextView
         android:id="@+id/login_title"
@@ -46,30 +62,43 @@
         app:layout_constraintTop_toBottomOf="@+id/login_title"
         tools:text="@string/please_login_to_continue" />
 
-    <dev.adryanev.dicodingstory.shared.presentation.widgets.PasswordTextInput
-        android:id="@+id/login_password_input"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/login_password_input_layout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/login_email_input"
-        app:layout_constraintStart_toStartOf="@+id/login_email_input"
-        app:layout_constraintTop_toBottomOf="@+id/login_email_input" />
+        app:endIconMode="password_toggle"
+        app:layout_constraintEnd_toEndOf="@+id/login_email_input_layout"
+        app:layout_constraintStart_toStartOf="@+id/login_email_input_layout"
+        app:layout_constraintTop_toBottomOf="@+id/login_email_input_layout">
 
-    <Button
+        <dev.adryanev.dicodingstory.shared.presentation.widgets.PasswordTextInput
+            android:id="@+id/login_password_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:textColorHint="#546E7A"
+            android:textSize="16sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/login_login_button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:layout_marginStart="64dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="64dp"
+        android:minHeight="64dp"
         android:text="@string/login"
         android:textSize="14sp"
         app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_password_input"
+        app:layout_constraintTop_toBottomOf="@+id/login_password_input_layout"
         tools:text="@string/login" />
 
     <TextView

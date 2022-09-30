@@ -9,8 +9,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.progressindicator.CircularProgressIndicatorSpec
+import com.google.android.material.progressindicator.IndeterminateDrawable
 import dagger.hilt.android.AndroidEntryPoint
+import dev.adryanev.dicodingstory.R
 import dev.adryanev.dicodingstory.core.presentations.error_handler.handleError
+import dev.adryanev.dicodingstory.core.presentations.error_handler.showToast
 import dev.adryanev.dicodingstory.core.presentations.mvi.MviView
 import dev.adryanev.dicodingstory.databinding.FragmentLoginBinding
 import dev.adryanev.dicodingstory.features.authentication.presentation.login.viewmodels.LoginFormViewModel
@@ -62,6 +66,18 @@ class LoginFragment : Fragment(), MviView<LoginFormViewState> {
     }
 
     override fun render(state: LoginFormViewState) {
+        if (state.isLoading) {
+            val spec =
+                CircularProgressIndicatorSpec(
+                    requireContext(),  /*attrs=*/null, 0,
+                    R.style.Theme_DicodingStory_CircularProgressIndicator_ExtraSmall_White
+                )
+            val progressIndicatorDrawable =
+                IndeterminateDrawable.createCircularDrawable(requireContext(), spec)
+            binding.loginLoginButton.icon = progressIndicatorDrawable
+        } else {
+            binding.loginLoginButton.icon = null
+        }
         state.loginResult.fold(
             {},
             { either ->
@@ -73,6 +89,7 @@ class LoginFragment : Fragment(), MviView<LoginFormViewState> {
                     { user ->
                         Timber.i("Success Logging in User: ${user?.name}")
                         if (user != null) {
+                            requireContext().showToast(getString(R.string.welcome, user.name))
                             navigate(LoginFragmentDirections.actionLoginFragmentToStoryFragment())
                         }
                     }

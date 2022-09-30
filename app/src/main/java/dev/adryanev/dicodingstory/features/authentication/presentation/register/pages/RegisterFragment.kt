@@ -8,16 +8,20 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.progressindicator.CircularProgressIndicatorSpec
+import com.google.android.material.progressindicator.IndeterminateDrawable
 import dagger.hilt.android.AndroidEntryPoint
 import dev.adryanev.dicodingstory.R
+import dev.adryanev.dicodingstory.core.presentations.error_handler.handleError
+import dev.adryanev.dicodingstory.core.presentations.error_handler.showToast
 import dev.adryanev.dicodingstory.core.presentations.mvi.MviView
 import dev.adryanev.dicodingstory.databinding.FragmentRegisterBinding
 import dev.adryanev.dicodingstory.features.authentication.presentation.register.viewmodels.RegisterFormViewModel
 import dev.adryanev.dicodingstory.features.authentication.presentation.register.viewmodels.RegisterFormViewState
+import timber.log.Timber
 
 @AndroidEntryPoint
 class RegisterFragment : Fragment(), MviView<RegisterFormViewState> {
@@ -28,8 +32,7 @@ class RegisterFragment : Fragment(), MviView<RegisterFormViewState> {
         get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
         binding.apply {
@@ -62,16 +65,43 @@ class RegisterFragment : Fragment(), MviView<RegisterFormViewState> {
         val appBarConfiguration = AppBarConfiguration(navController.graph)
 
         binding.registerToolbar.setupWithNavController(navController, appBarConfiguration)
+        collectUiState()
     }
 
-    override fun render(state: RegisterFormViewState) {
+    private fun collectUiState() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
 
+            viewModel.state.collect(::render)
         }
     }
 
-    private fun navigate(action: NavDirections) {
-        findNavController().navigate(action)
+    override fun render(state: RegisterFormViewState) {
+        if (state.isLoading) {
+            val spec =
+                CircularProgressIndicatorSpec(
+                    requireContext(),  /*attrs=*/null, 0,
+                    R.style.Theme_DicodingStory_CircularProgressIndicator_ExtraSmall_White
+                )
+            val progressIndicatorDrawable =
+                IndeterminateDrawable.createCircularDrawable(requireContext(), spec)
+            binding.registerButton.icon = progressIndicatorDrawable
+        } else {
+            binding.registerButton.icon = null
+        }
+        state.registerResult.fold({}, { either ->
+            either.fold({ failure ->
+                Timber.i("failure occured: $failure")
+                requireContext().handleError(failure)
+            }, {
+                requireContext().showToast(getString(R.string.register_success))
+                navigateToLogin()
+
+            })
+        })
+    }
+
+    private fun navigateToLogin() {
+        findNavController().popBackStack()
     }
 
 }

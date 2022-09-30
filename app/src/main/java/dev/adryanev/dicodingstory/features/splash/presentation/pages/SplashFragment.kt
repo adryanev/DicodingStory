@@ -67,7 +67,7 @@ class SplashFragment : Fragment(), MviView<SplashViewState> {
                             } else {
                                 navigateToLogin()
                             }
-                        }, 2000)
+                        }, 2500)
 
                     }
                 )
@@ -87,7 +87,7 @@ class SplashFragment : Fragment(), MviView<SplashViewState> {
     }
 
     private fun navigate(action: NavDirections) {
-        Timber.i("Navigate to ${action.actionId}")
+        Timber.i("Navigate to $action")
         findNavController().navigate(action)
     }
 
