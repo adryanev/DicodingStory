@@ -14,6 +14,7 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import dev.adryanev.dicodingstory.R
 import dev.adryanev.dicodingstory.core.presentations.error_handler.handleError
@@ -135,14 +136,14 @@ class StoryFragment : Fragment(), MviView<StoryListState> {
                 either.fold({ failure ->
                     requireContext().handleError(failure)
                 }, { stories ->
-                    val currentRefresh = isRefresh
+                    val adapter = binding.storyRecyclerView.adapter as StoryListAdapter
                     Timber.i("Story fetched Successfully: $stories")
-                    if (!isLoading) {
-                        (binding.storyRecyclerView.adapter as StoryListAdapter).submitList(stories) {
-                            Timber.d("currentRefresh: $currentRefresh")
-                            if (currentRefresh) {
+                    if (adapter.currentList.isEmpty()) {
+                        adapter.submitList(stories) {}
+                    } else {
+                        if (adapter.currentList.firstOrNull()?.id != stories.firstOrNull()?.id) {
+                            adapter.submitList(stories) {
                                 binding.storyRecyclerView.smoothScrollToPosition(0)
-
                             }
                         }
                     }
