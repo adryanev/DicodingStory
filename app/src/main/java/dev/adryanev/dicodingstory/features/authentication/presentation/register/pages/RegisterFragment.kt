@@ -21,6 +21,7 @@ import dev.adryanev.dicodingstory.core.presentations.mvi.MviView
 import dev.adryanev.dicodingstory.databinding.FragmentRegisterBinding
 import dev.adryanev.dicodingstory.features.authentication.presentation.register.viewmodels.RegisterFormViewModel
 import dev.adryanev.dicodingstory.features.authentication.presentation.register.viewmodels.RegisterFormViewState
+import kotlinx.coroutines.flow.collectLatest
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -73,7 +74,7 @@ class RegisterFragment : Fragment(), MviView<RegisterFormViewState> {
     private fun collectUiState() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
 
-            viewModel.state.collect(::render)
+            viewModel.state.collectLatest(::render)
         }
     }
 
@@ -104,6 +105,11 @@ class RegisterFragment : Fragment(), MviView<RegisterFormViewState> {
 
     private fun navigateToLogin() {
         findNavController().popBackStack()
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
 }

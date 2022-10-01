@@ -4,6 +4,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-kapt'
+    id 'kotlin-parcelize'
 
 }
 
@@ -97,6 +98,10 @@ dependencies {
 
     //Location
     implementation 'com.google.android.gms:play-services-location:20.0.0'
+
+    //Image
+    implementation 'com.squareup.picasso:picasso:2.8'
+
 
     //Testing
     testImplementation 'junit:junit:4.13.2'

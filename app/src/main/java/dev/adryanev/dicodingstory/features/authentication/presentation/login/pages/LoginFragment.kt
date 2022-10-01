@@ -19,6 +19,7 @@ import dev.adryanev.dicodingstory.core.presentations.mvi.MviView
 import dev.adryanev.dicodingstory.databinding.FragmentLoginBinding
 import dev.adryanev.dicodingstory.features.authentication.presentation.login.viewmodels.LoginFormViewModel
 import dev.adryanev.dicodingstory.features.authentication.presentation.login.viewmodels.LoginFormViewState
+import kotlinx.coroutines.flow.collectLatest
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -30,8 +31,7 @@ class LoginFragment : Fragment(), MviView<LoginFormViewState> {
         get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         binding.apply {
@@ -63,45 +63,52 @@ class LoginFragment : Fragment(), MviView<LoginFormViewState> {
 
     private fun collectUiState() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.state.collect(::render)
+            viewModel.state.collectLatest(::render)
         }
     }
 
     override fun render(state: LoginFormViewState) {
         if (state.isLoading) {
-            val spec =
-                CircularProgressIndicatorSpec(
-                    requireContext(),  /*attrs=*/null, 0,
-                    R.style.Theme_DicodingStory_CircularProgressIndicator_ExtraSmall_White
-                )
+            val spec = CircularProgressIndicatorSpec(
+                requireContext(),  /*attrs=*/
+                null, 0, R.style.Theme_DicodingStory_CircularProgressIndicator_ExtraSmall_White
+            )
             val progressIndicatorDrawable =
                 IndeterminateDrawable.createCircularDrawable(requireContext(), spec)
-            binding.loginLoginButton.icon = progressIndicatorDrawable
-        } else {
-            binding.loginLoginButton.icon = null
-        }
-        state.loginResult.fold(
-            {},
-            { either ->
-                either.fold(
-                    { failure ->
-                        Timber.i("Failure occurred: $failure")
-                        requireContext().handleError(failure)
-                    },
-                    { user ->
-                        Timber.i("Success Logging in User: ${user?.name}")
-                        if (user != null) {
-                            requireContext().showToast(getString(R.string.welcome, user.name))
-                            navigate(LoginFragmentDirections.actionLoginFragmentToStoryFragment())
-                        }
-                    }
-                )
+            binding.loginLoginButton.apply {
+                icon = progressIndicatorDrawable
+                isClickable = false
+                isEnabled = false
             }
-        )
+
+        } else {
+            binding.loginLoginButton.apply {
+                icon = null
+                isClickable = false
+                isEnabled = false
+            }
+        }
+        state.loginResult.fold({}, { either ->
+            either.fold({ failure ->
+                Timber.i("Failure occurred: $failure")
+                requireContext().handleError(failure)
+            }, { user ->
+                Timber.i("Success Logging in User: ${user?.name}")
+                if (user != null) {
+                    requireContext().showToast(getString(R.string.welcome, user.name))
+                    navigate(LoginFragmentDirections.actionLoginFragmentToStoryFragment())
+                }
+            })
+        })
     }
 
     private fun navigate(action: NavDirections) {
         Timber.i("Navigate to ${action.actionId}")
         findNavController().navigate(action)
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }

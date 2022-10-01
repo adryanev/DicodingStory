@@ -91,4 +91,9 @@ class SplashFragment : Fragment(), MviView<SplashViewState> {
         findNavController().navigate(action)
     }
 
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
+
 }

@@ -16,6 +16,8 @@ import dev.adryanev.dicodingstory.features.authentication.data.repositories.Auth
 import dev.adryanev.dicodingstory.features.authentication.domain.repositories.AuthenticationRepository
 import dev.adryanev.dicodingstory.features.story.data.datasources.remote.StoryRemoteDataSource
 import dev.adryanev.dicodingstory.features.story.data.datasources.remote.StoryRemoteDataSourceImpl
+import dev.adryanev.dicodingstory.features.story.data.repositories.StoryRepositoryImpl
+import dev.adryanev.dicodingstory.features.story.domain.repositories.StoryRepository
 import dev.adryanev.dicodingstory.services.locations.data.repositories.LocationRepositoryImpl
 import dev.adryanev.dicodingstory.services.locations.domain.repositories.LocationRepository
 import javax.inject.Singleton
@@ -64,4 +66,8 @@ abstract class BindingModule {
     abstract fun bindStoryRemoteSource(
         storyRemoteDataSource: StoryRemoteDataSourceImpl
     ): StoryRemoteDataSource
+
+    @Singleton
+    @Binds
+    abstract fun bindStoryRepository(storyRepositoryImpl: StoryRepositoryImpl): StoryRepository
 }

@@ -3,8 +3,10 @@ package dev.adryanev.dicodingstory.core.presentations.error_handler
 import android.content.Context
 import android.widget.Toast
 import dev.adryanev.dicodingstory.core.domain.failures.*
+import timber.log.Timber
 
 fun Context.handleError(failure: Failure) {
+    Timber.i("Failure occurred: $failure")
     when (failure) {
         is SslFailure -> showToast(failure.toString())
         is NetworkFailure -> showToast(failure.message)

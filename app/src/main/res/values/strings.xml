@@ -19,4 +19,7 @@
     <string name="empty_name">Name cannot be empty</string>
     <string name="register_success">Success registering your account</string>
     <string name="welcome">Welcome %1$s</string>
+    <string name="logout">Logout</string>
+    <string name="coordinates">(%1$f, %2$f)</string>
+    <string name="description_story_image">Image of story</string>
 </resources>
