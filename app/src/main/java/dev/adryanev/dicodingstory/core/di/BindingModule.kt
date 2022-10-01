@@ -16,6 +16,8 @@ import dev.adryanev.dicodingstory.features.authentication.data.repositories.Auth
 import dev.adryanev.dicodingstory.features.authentication.domain.repositories.AuthenticationRepository
 import dev.adryanev.dicodingstory.features.story.data.datasources.remote.StoryRemoteDataSource
 import dev.adryanev.dicodingstory.features.story.data.datasources.remote.StoryRemoteDataSourceImpl
+import dev.adryanev.dicodingstory.services.locations.data.repositories.LocationRepositoryImpl
+import dev.adryanev.dicodingstory.services.locations.domain.repositories.LocationRepository
 import javax.inject.Singleton
 
 @Module
@@ -29,6 +31,12 @@ abstract class BindingModule {
     @Singleton
     @Binds
     abstract fun bindResourceProvider(resourceProviderImpl: ResourceProviderImpl): ResourceProvider
+
+    // =====================LOCATION BINDINGS==============================
+
+    @Singleton
+    @Binds
+    abstract fun bindLocationRepository(locationRepositoryImpl: LocationRepositoryImpl): LocationRepository
 
 
     // =====================AUTHENTICATION BINDINGS========================

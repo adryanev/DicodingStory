@@ -9,3 +9,5 @@ object SslFailure : Failure.CustomFailure()
 class DatabaseFailure(val message: String) : Failure.CustomFailure()
 class SharedPreferenceFailure(val message: String) : Failure.CustomFailure()
 object ServiceFailure : Failure.CustomFailure()
+class LocationFailure(val message: String): Failure.CustomFailure()
+
