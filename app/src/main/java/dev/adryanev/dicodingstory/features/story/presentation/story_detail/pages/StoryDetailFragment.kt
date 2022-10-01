@@ -5,58 +5,85 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
+import androidx.transition.TransitionInflater
+import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import dev.adryanev.dicodingstory.R
+import dev.adryanev.dicodingstory.databinding.FragmentStoryDetailBinding
+import java.time.format.DateTimeFormatter
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [StoryDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 @AndroidEntryPoint
 class StoryDetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentStoryDetailBinding? = null
+
+    private val binding: FragmentStoryDetailBinding
+        get() = _binding!!
+
+    private val args: StoryDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_story_detail, container, false)
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentStoryDetailBinding.inflate(inflater, container, false)
+        val navController = findNavController()
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+
+        binding.detailStoryToolbar.toolbar.setupWithNavController(
+            navController, appBarConfiguration
+        )
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment StoryDetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            StoryDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setSharedElementTransitionOnEnter()
+        postponeEnterTransition()
+        initView()
+    }
+
+    private fun setSharedElementTransitionOnEnter() {
+        val transition = TransitionInflater.from(requireContext())
+            .inflateTransition(android.R.transition.move)
+        sharedElementEnterTransition = transition
+        sharedElementReturnTransition = transition
+    }
+
+    private fun initView() {
+        val story = args.story
+
+        binding.apply {
+            detailStoryAuthor.text = story.name
+            detailStoryDescription.text = story.description
+            detailStoryCoordinates.text = root.context.getString(
+                R.string.coordinates, story.location?.latitude, story.location?.longitude
+            )
+            if (story.location == null) {
+                detailStoryCoordinates.visibility = View.INVISIBLE
             }
+            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss")
+            val formattedDate = story.createdAt.format(formatter)
+
+            detailStoryDate.text = formattedDate
+            Picasso.get().load(story.photoUrl).fit().noFade().centerCrop()
+                .into(detailStoryPhoto, object : Callback {
+                    override fun onSuccess() {
+                        startPostponedEnterTransition()
+
+                    }
+
+                    override fun onError(e: Exception?) {
+                        startPostponedEnterTransition()
+
+                    }
+                })
+        }
     }
 }
+
+

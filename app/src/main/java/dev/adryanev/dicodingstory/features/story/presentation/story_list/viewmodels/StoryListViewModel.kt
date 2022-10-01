@@ -17,13 +17,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StoryListViewModel @Inject constructor(
-    private val getLatestStory: GetLatestStory,
-    private val logoutUser: LogoutUser
+    private val getLatestStory: GetLatestStory, private val logoutUser: LogoutUser
 ) : ViewModel(), MviViewModel<StoryListState> {
 
     private val _state = MutableStateFlow(StoryListState.initial())
     override val state: StateFlow<StoryListState>
         get() = _state
+
+    init {
+        getLatestStory()
+    }
 
     fun getLatestStory() {
         _state.value = _state.value.copy(isLoading = true)
@@ -33,7 +36,6 @@ class StoryListViewModel @Inject constructor(
                     storyList = Option.fromNullable(it)
                 )
                 _state.value = _state.value.copy(
-                    storyList = none(),
                     isLoading = false
                 )
             }

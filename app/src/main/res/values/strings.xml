@@ -22,4 +22,6 @@
     <string name="logout">Logout</string>
     <string name="coordinates">(%1$f, %2$f)</string>
     <string name="description_story_image">Image of story</string>
+    <string name="add_new_story">Add new story</string>
+    <string name="detail_story">Detail Story</string>
 </resources>

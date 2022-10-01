@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -54,8 +55,7 @@ class StoryFragment : Fragment(), MviView<StoryListState> {
                         true
 
                     }
-                    else ->
-                        false
+                    else -> false
                 }
 
             }
@@ -74,26 +74,33 @@ class StoryFragment : Fragment(), MviView<StoryListState> {
     }
 
     private fun collectUiState() {
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            viewModel.getLatestStory()
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.state.collectLatest(::render)
         }
     }
 
     private fun initView() {
-        binding.storyRecyclerView.adapter = StoryListAdapter {
-            navigateToStoryDetail(it)
-        }
+        binding.storyRecyclerView.adapter = StoryListAdapter(::navigateToStoryDetail)
         binding.storySwipeRefreshLayout.flowRefresh().map {
             viewModel.getLatestStory()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+        postponeEnterTransition()
+        requireView().viewTreeObserver.addOnPreDrawListener {
+            startPostponedEnterTransition()
+            true
+
+        }
     }
 
-    private fun navigateToStoryDetail(story: Story) {
+    private fun navigateToStoryDetail(sharedElement: Map<View, String>, story: Story) {
+        val extra = FragmentNavigatorExtras(
+            *sharedElement.map { it.key to it.value }.toTypedArray()
+        )
+        Timber.d(extra.toString())
         findNavController().navigate(
             StoryFragmentDirections.actionStoryFragmentToStoryDetailFragment(
                 story
-            )
+            ), extra
         )
     }
 
@@ -107,15 +114,16 @@ class StoryFragment : Fragment(), MviView<StoryListState> {
                 }, { stories ->
                     Timber.i("Story fetched Successfully: $stories")
                     (binding.storyRecyclerView.adapter as StoryListAdapter).submitList(stories)
+                    binding.storyRecyclerView.smoothScrollToPosition(0)
+
                 })
             })
-            logout.fold({},
-                { either ->
-                    either.fold({ failure -> requireContext().handleError(failure) }, {
-                        Timber.d("User logged out successfully")
-                        navigateToLogin()
-                    })
+            logout.fold({}, { either ->
+                either.fold({ failure -> requireContext().handleError(failure) }, {
+                    Timber.i("User logged out successfully")
+                    navigateToLogin()
                 })
+            })
         }
     }
 

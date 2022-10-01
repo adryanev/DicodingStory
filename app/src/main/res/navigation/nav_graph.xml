@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
+    android:label="@string/app_name"
     app:startDestination="@id/splashFragment">
     <fragment
         android:id="@+id/splashFragment"
@@ -12,8 +13,8 @@
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/splashFragment"
             app:launchSingleTop="true"
+            app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_splashFragment_to_storyFragment"
@@ -56,7 +57,6 @@
         <action
             android:id="@+id/action_storyFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:launchSingleTop="true"
             app:popUpTo="@id/storyFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -68,7 +68,7 @@
     <fragment
         android:id="@+id/storyDetailFragment"
         android:name="dev.adryanev.dicodingstory.features.story.presentation.story_detail.pages.StoryDetailFragment"
-        android:label="fragment_story_detail"
+        android:label="@string/detail_story"
         tools:layout="@layout/fragment_story_detail">
         <argument
             android:name="story"

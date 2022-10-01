@@ -22,5 +22,7 @@
     <string name="logout">Keluar</string>
     <string name="coordinates">(%1$f, %2$f)</string>
     <string name="description_story_image">Gambar dari cerita</string>
+    <string name="add_new_story">Tambahkan cerita baru</string>
+    <string name="detail_story">Detil Cerita</string>
 
 </resources>
