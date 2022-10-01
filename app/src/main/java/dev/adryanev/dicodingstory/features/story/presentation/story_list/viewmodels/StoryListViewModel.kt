@@ -1,6 +1,8 @@
 package dev.adryanev.dicodingstory.features.story.presentation.story_list.viewmodels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import arrow.core.Option
 import arrow.core.none
@@ -10,47 +12,74 @@ import dev.adryanev.dicodingstory.core.presentations.mvi.MviViewModel
 import dev.adryanev.dicodingstory.features.authentication.domain.usecases.LogoutUser
 import dev.adryanev.dicodingstory.features.story.domain.usecases.GetLatestStory
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class StoryListViewModel @Inject constructor(
-    private val getLatestStory: GetLatestStory, private val logoutUser: LogoutUser
+    private val getLatestStory: GetLatestStory,
+    private val logoutUser: LogoutUser,
 ) : ViewModel(), MviViewModel<StoryListState> {
 
     private val _state = MutableStateFlow(StoryListState.initial())
-    override val state: StateFlow<StoryListState>
-        get() = _state
+    override val state: LiveData<StoryListState>
+        get() = _state.asLiveData()
 
     init {
-        getLatestStory()
+        latestStory()
     }
 
-    fun getLatestStory() {
-        _state.value = _state.value.copy(isLoading = true)
+    private fun latestStory() {
         viewModelScope.launch {
-            getLatestStory(NoParams).collectLatest {
-                _state.value = _state.value.copy(
-                    storyList = Option.fromNullable(it)
-                )
-                _state.value = _state.value.copy(
-                    isLoading = false
-                )
+            _state.update { it.copy(isLoading = true) }
+
+            getLatestStory(NoParams).collectLatest { either ->
+
+                _state.update {
+                    it.copy(storyList = Option.fromNullable(either))
+                }
+                _state.update {
+                    it.copy(isLoading = false)
+                }
             }
         }
     }
 
+    fun refreshPage() {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(isRefresh = true)
+            }
+            _state.update { it.copy(isLoading = true) }
+
+            getLatestStory(NoParams).collectLatest { either ->
+
+                _state.update {
+                    it.copy(storyList = Option.fromNullable(either))
+                }
+                _state.update {
+                    it.copy(isLoading = false)
+                }
+            }
+            _state.update {
+                it.copy(isRefresh = false)
+            }
+        }
+
+    }
+
     fun logout() {
         viewModelScope.launch {
-            logoutUser(NoParams).collectLatest {
-                _state.value = _state.value.copy(
-                    logout = Option.fromNullable(it)
-                )
-                _state.value = _state.value.copy(
-                    logout = none()
-                )
+            logoutUser(NoParams).collectLatest { either ->
+                _state.update {
+                    it.copy(logout = Option.fromNullable(either))
+                }
+                _state.update {
+                    it.copy(logout = none())
+                }
+
             }
         }
     }

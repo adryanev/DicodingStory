@@ -24,5 +24,8 @@
     <string name="description_story_image">Gambar dari cerita</string>
     <string name="add_new_story">Tambahkan cerita baru</string>
     <string name="detail_story">Detil Cerita</string>
+    <string name="logout_message">Apakah anda yakin ingin keluar?</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
 
 </resources>

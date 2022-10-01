@@ -1,10 +1,10 @@
 package dev.adryanev.dicodingstory.core.presentations.mvi
 
-import kotlinx.coroutines.flow.StateFlow
+import androidx.lifecycle.LiveData
 
 /**
  * @param S Top class of the [MviViewState] the [MviViewModel] will be emitting.
  */
-interface MviViewModel< S : MviViewState> {
-    val state: StateFlow<S>
+interface MviViewModel<S : MviViewState> {
+    val state: LiveData<S>
 }

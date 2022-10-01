@@ -1,6 +1,8 @@
 package dev.adryanev.dicodingstory.features.authentication.presentation.login.viewmodels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import arrow.core.Option
 import arrow.core.none
@@ -12,9 +14,8 @@ import dev.adryanev.dicodingstory.features.authentication.domain.usecases.LogInU
 import dev.adryanev.dicodingstory.shared.domain.value_object.EmailAddress
 import dev.adryanev.dicodingstory.shared.domain.value_object.Password
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,18 +25,20 @@ class LoginFormViewModel @Inject constructor(
 ) : ViewModel(), MviViewModel<LoginFormViewState> {
     private val _state = MutableStateFlow(LoginFormViewState.initial())
 
-    override val state: StateFlow<LoginFormViewState>
-        get() = _state.asStateFlow()
+    override val state: LiveData<LoginFormViewState>
+        get() = _state.asLiveData()
 
     fun emailAddressChanged(email: String) {
         if (email.isEmpty()) return
         val emailAddress = EmailAddress(email)
-        _state.value = _state.value.copy(emailAddress = emailAddress)
+        _state.update { it.copy(emailAddress = emailAddress) }
     }
 
     fun passwordChanged(stringPassword: String) {
         val password = Password(stringPassword)
-        _state.value = _state.value.copy(password = password)
+        _state.update {
+            it.copy(password = password)
+        }
     }
 
     fun loginButtonPressed() {
@@ -44,7 +47,9 @@ class LoginFormViewModel @Inject constructor(
         if (email == null && password == null) {
             return
         }
-        _state.value = _state.value.copy(isLoading = true)
+        _state.update {
+            it.copy(isLoading = true)
+        }
 
         viewModelScope.launch {
             val result = logInUser(
@@ -52,17 +57,16 @@ class LoginFormViewModel @Inject constructor(
                     LoginForm(emailAddress = email!!, password = password!!)
                 )
             )
-            result.collectLatest {
-                _state.value =
-                    _state.value.copy(
-                        loginResult = Option.fromNullable(it),
-                    )
-                _state.value =
-                    _state.value.copy(
+            result.collectLatest { either ->
+                _state.update {
+                    it.copy(loginResult = Option.fromNullable(either))
+                }
+                _state.update {
+                    it.copy(
                         loginResult = none(),
                         isLoading = false
                     )
-
+                }
             }
         }
     }

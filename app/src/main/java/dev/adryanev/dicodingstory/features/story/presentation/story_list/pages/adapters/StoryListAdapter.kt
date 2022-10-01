@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import dev.adryanev.dicodingstory.R
+import dev.adryanev.dicodingstory.core.presentations.setSingleClick
 import dev.adryanev.dicodingstory.databinding.FragmentStoryItemBinding
 import dev.adryanev.dicodingstory.features.story.domain.entities.Story
 import java.time.format.DateTimeFormatter
 
 class StoryListAdapter(
-    val listener: (
+    private val listener: (
         transitionElement: Map<View, String>, story: Story
     ) -> Unit
 ) : ListAdapter<Story, StoryItemViewHolder>(StoryDiffCallback()) {
@@ -23,13 +24,12 @@ class StoryListAdapter(
             FragmentStoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
 
-        holder.binding.root.setOnClickListener {
+        holder.binding.root.setSingleClick {
             with(holder.binding) {
                 val context = holder.itemView.context
 
                 ViewCompat.setTransitionName(
-                    itemStoryImage,
-                    context.getString(R.string.story_image_transition)
+                    itemStoryImage, context.getString(R.string.story_image_transition)
                 )
                 ViewCompat.setTransitionName(
                     itemStoryAuthor, context.getString(R.string.story_author_transition)
@@ -93,7 +93,7 @@ class StoryItemViewHolder(val binding: FragmentStoryItemBinding) :
 
             itemStoryCreatedDate.text = formattedDate
             Picasso.get().load(item.photoUrl).placeholder(R.drawable.undraw_not_found)
-                .error(R.drawable.undraw_not_found).fit().into(itemStoryImage)
+                .error(R.drawable.undraw_not_found).fit().centerCrop().into(itemStoryImage)
         }
 
     }

@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.Observer
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,20 +33,19 @@ class SplashFragment : Fragment(), MviView<SplashViewState> {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSplashBinding.inflate(inflater, container, false)
+        viewModel.checkIsLoggedIn()
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.checkIsLoggedIn()
         collectUiState()
 
     }
 
     private fun collectUiState() {
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            viewModel.state.collect(::render)
-        }
+        viewModel.state.observe(viewLifecycleOwner, Observer(::render))
     }
 
     override fun render(state: SplashViewState) {

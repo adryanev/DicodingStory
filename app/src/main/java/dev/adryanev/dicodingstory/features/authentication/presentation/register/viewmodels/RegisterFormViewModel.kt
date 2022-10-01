@@ -1,6 +1,8 @@
 package dev.adryanev.dicodingstory.features.authentication.presentation.register.viewmodels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import arrow.core.Option
 import arrow.core.none
@@ -12,8 +14,6 @@ import dev.adryanev.dicodingstory.features.authentication.domain.usecases.Regist
 import dev.adryanev.dicodingstory.shared.domain.value_object.EmailAddress
 import dev.adryanev.dicodingstory.shared.domain.value_object.Password
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,8 +24,8 @@ class RegisterFormViewModel @Inject constructor(
 ) : ViewModel(), MviViewModel<RegisterFormViewState> {
     private val _state = MutableStateFlow(RegisterFormViewState.initial())
 
-    override val state: StateFlow<RegisterFormViewState>
-        get() = _state.asStateFlow()
+    override val state: LiveData<RegisterFormViewState>
+        get() = _state.asLiveData()
 
     fun emailAddressChanged(email: String) {
         val emailAddress = EmailAddress(email)
@@ -48,10 +48,7 @@ class RegisterFormViewModel @Inject constructor(
         val email = _state.value.emailAddress
         val password = _state.value.password
 
-        if (name == null &&
-            email == null &&
-            password == null
-        ) {
+        if (name == null && email == null && password == null) {
             return
         }
 
@@ -62,9 +59,7 @@ class RegisterFormViewModel @Inject constructor(
             val result = registerUser(
                 RegisterUserParams(
                     registerForm = RegisterForm(
-                        name = name!!,
-                        emailAddress = email!!,
-                        password = password!!
+                        name = name!!, emailAddress = email!!, password = password!!
                     )
                 )
             )
@@ -74,8 +69,7 @@ class RegisterFormViewModel @Inject constructor(
                     registerResult = Option.fromNullable(it)
                 )
                 _state.value = _state.value.copy(
-                    isLoading = false,
-                    registerResult = none()
+                    isLoading = false, registerResult = none()
                 )
             }
 

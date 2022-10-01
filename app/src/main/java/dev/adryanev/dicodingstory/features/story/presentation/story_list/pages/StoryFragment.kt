@@ -1,11 +1,14 @@
 package dev.adryanev.dicodingstory.features.story.presentation.story_list.pages
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
@@ -21,7 +24,6 @@ import dev.adryanev.dicodingstory.features.story.domain.entities.Story
 import dev.adryanev.dicodingstory.features.story.presentation.story_list.pages.adapters.StoryListAdapter
 import dev.adryanev.dicodingstory.features.story.presentation.story_list.viewmodels.StoryListState
 import dev.adryanev.dicodingstory.features.story.presentation.story_list.viewmodels.StoryListViewModel
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
@@ -60,11 +62,30 @@ class StoryFragment : Fragment(), MviView<StoryListState> {
 
             }
         }
+
         return binding.root
     }
 
     private fun logoutUser() {
-        viewModel.logout()
+
+        val builder = AlertDialog.Builder(requireContext())
+        builder.apply {
+            setTitle(getString(R.string.logout))
+            setMessage(
+                getString(R.string.logout_message)
+            )
+            setPositiveButton(R.string.yes) { dialog, _ ->
+                viewModel.logout()
+                dialog.dismiss()
+
+            }
+            setNegativeButton(R.string.no) { dialog, _ ->
+                dialog.dismiss()
+
+            }
+            show()
+        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,15 +95,16 @@ class StoryFragment : Fragment(), MviView<StoryListState> {
     }
 
     private fun collectUiState() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.state.collectLatest(::render)
-        }
+
+        viewModel.state.distinctUntilChanged().observe(
+            viewLifecycleOwner, Observer(::render)
+        )
     }
 
     private fun initView() {
         binding.storyRecyclerView.adapter = StoryListAdapter(::navigateToStoryDetail)
         binding.storySwipeRefreshLayout.flowRefresh().map {
-            viewModel.getLatestStory()
+            viewModel.refreshPage()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
         postponeEnterTransition()
         requireView().viewTreeObserver.addOnPreDrawListener {
@@ -96,7 +118,6 @@ class StoryFragment : Fragment(), MviView<StoryListState> {
         val extra = FragmentNavigatorExtras(
             *sharedElement.map { it.key to it.value }.toTypedArray()
         )
-        Timber.d(extra.toString())
         findNavController().navigate(
             StoryFragmentDirections.actionStoryFragmentToStoryDetailFragment(
                 story
@@ -105,16 +126,22 @@ class StoryFragment : Fragment(), MviView<StoryListState> {
     }
 
     override fun render(state: StoryListState) {
+        Timber.d("New State : $state")
         with(state) {
-            binding.storySwipeRefreshLayout.isRefreshing = isLoading
+            binding.storySwipeRefreshLayout.isRefreshing = isRefresh
 
             storyList.fold({}, { either ->
                 either.fold({ failure ->
                     requireContext().handleError(failure)
                 }, { stories ->
                     Timber.i("Story fetched Successfully: $stories")
-                    (binding.storyRecyclerView.adapter as StoryListAdapter).submitList(stories)
-                    binding.storyRecyclerView.smoothScrollToPosition(0)
+                    (binding.storyRecyclerView.adapter as StoryListAdapter).submitList(stories) {
+                        if (isRefresh) {
+                            binding.storyRecyclerView.smoothScrollToPosition(0)
+
+                        }
+                    }
+
 
                 })
             })

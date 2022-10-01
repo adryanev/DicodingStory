@@ -9,12 +9,14 @@ import dev.adryanev.dicodingstory.features.story.domain.entities.Story
 
 data class StoryListState(
     val isLoading: Boolean,
+    val isRefresh: Boolean,
     val storyList: Option<Either<Failure, List<Story>>>,
     val logout: Option<Either<Failure, Unit>>
 ) : MviViewState {
     companion object {
         fun initial() = StoryListState(
             isLoading = false,
+            isRefresh = false,
             storyList = none(),
             logout = none()
         )

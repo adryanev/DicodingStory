@@ -20,8 +20,11 @@
     <string name="register_success">Success registering your account</string>
     <string name="welcome">Welcome %1$s</string>
     <string name="logout">Logout</string>
+    <string name="logout_message">Are you sure to logout?</string>
     <string name="coordinates">(%1$f, %2$f)</string>
     <string name="description_story_image">Image of story</string>
     <string name="add_new_story">Add new story</string>
     <string name="detail_story">Detail Story</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>
