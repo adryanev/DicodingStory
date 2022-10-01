@@ -48,25 +48,32 @@ class StoryListViewModel @Inject constructor(
     }
 
     fun refreshPage() {
-        viewModelScope.launch {
-            _state.update {
-                it.copy(isRefresh = true)
-            }
-            _state.update { it.copy(isLoading = true) }
 
+        viewModelScope.launch {
+
+            _state.update {
+                it.copy(isRefresh = true, isLoading = true)
+            }
             getLatestStory(NoParams).collectLatest { either ->
 
                 _state.update {
-                    it.copy(storyList = Option.fromNullable(either))
+                    it.copy(
+                        storyList = Option.fromNullable(either),
+
+                        )
                 }
+
                 _state.update {
-                    it.copy(isLoading = false)
+                    it.copy(
+                        isRefresh = false,
+                        isLoading = false
+                    )
                 }
-            }
-            _state.update {
-                it.copy(isRefresh = false)
+
+
             }
         }
+
 
     }
 

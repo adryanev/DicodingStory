@@ -16,6 +16,7 @@ import dev.adryanev.dicodingstory.R
 import dev.adryanev.dicodingstory.core.presentations.error_handler.handleError
 import dev.adryanev.dicodingstory.core.presentations.error_handler.showToast
 import dev.adryanev.dicodingstory.core.presentations.mvi.MviView
+import dev.adryanev.dicodingstory.core.presentations.setSingleClick
 import dev.adryanev.dicodingstory.databinding.FragmentLoginBinding
 import dev.adryanev.dicodingstory.features.authentication.presentation.login.viewmodels.LoginFormViewModel
 import dev.adryanev.dicodingstory.features.authentication.presentation.login.viewmodels.LoginFormViewState
@@ -44,11 +45,11 @@ class LoginFragment : Fragment(), MviView<LoginFormViewState> {
                 if (it.isEmpty() || it.length < 6) return@setOnTextChangedCallback
                 viewModel.passwordChanged(it)
             }
-            loginLoginButton.setOnClickListener {
+            loginLoginButton.setSingleClick {
                 Timber.i("Login Button Pressed")
                 viewModel.loginButtonPressed()
             }
-            loginRegisterText.setOnClickListener {
+            loginRegisterText.setSingleClick {
                 navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
             }
         }
@@ -79,11 +80,21 @@ class LoginFragment : Fragment(), MviView<LoginFormViewState> {
             }
 
         } else {
-            binding.loginLoginButton.apply {
-                icon = null
-                isClickable = false
-                isEnabled = false
+            if(state.emailAddress != null && state.password != null){
+                binding.loginLoginButton.apply {
+                    icon = null
+                    isClickable = true
+                    isEnabled = true
+                }
             }
+            else {
+                binding.loginLoginButton.apply {
+                    icon = null
+                    isClickable = false
+                    isEnabled = false
+                }
+            }
+
         }
         state.loginResult.fold({}, { either ->
             either.fold({ failure ->

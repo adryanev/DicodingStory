@@ -130,15 +130,20 @@ class StoryFragment : Fragment(), MviView<StoryListState> {
         with(state) {
             binding.storySwipeRefreshLayout.isRefreshing = isRefresh
 
+
             storyList.fold({}, { either ->
                 either.fold({ failure ->
                     requireContext().handleError(failure)
                 }, { stories ->
+                    val currentRefresh = isRefresh
                     Timber.i("Story fetched Successfully: $stories")
-                    (binding.storyRecyclerView.adapter as StoryListAdapter).submitList(stories) {
-                        if (isRefresh) {
-                            binding.storyRecyclerView.smoothScrollToPosition(0)
+                    if (!isLoading) {
+                        (binding.storyRecyclerView.adapter as StoryListAdapter).submitList(stories) {
+                            Timber.d("currentRefresh: $currentRefresh")
+                            if (currentRefresh) {
+                                binding.storyRecyclerView.smoothScrollToPosition(0)
 
+                            }
                         }
                     }
 

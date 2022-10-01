@@ -18,6 +18,7 @@ import dev.adryanev.dicodingstory.R
 import dev.adryanev.dicodingstory.core.presentations.error_handler.handleError
 import dev.adryanev.dicodingstory.core.presentations.error_handler.showToast
 import dev.adryanev.dicodingstory.core.presentations.mvi.MviView
+import dev.adryanev.dicodingstory.core.presentations.setSingleClick
 import dev.adryanev.dicodingstory.databinding.FragmentRegisterBinding
 import dev.adryanev.dicodingstory.features.authentication.presentation.register.viewmodels.RegisterFormViewModel
 import dev.adryanev.dicodingstory.features.authentication.presentation.register.viewmodels.RegisterFormViewState
@@ -53,7 +54,7 @@ class RegisterFragment : Fragment(), MviView<RegisterFormViewState> {
                 }
                 viewModel.nameChanged(text.toString())
             }
-            registerButton.setOnClickListener {
+            registerButton.setSingleClick {
                 viewModel.registerButtonPressed()
             }
         }
@@ -78,15 +79,29 @@ class RegisterFragment : Fragment(), MviView<RegisterFormViewState> {
         if (state.isLoading) {
             val spec = CircularProgressIndicatorSpec(
                 requireContext(),  /*attrs=*/
-                null,
-                0,
-                R.style.Theme_DicodingStory_CircularProgressIndicator_ExtraSmall_White
+                null, 0, R.style.Theme_DicodingStory_CircularProgressIndicator_ExtraSmall_White
             )
             val progressIndicatorDrawable =
                 IndeterminateDrawable.createCircularDrawable(requireContext(), spec)
-            binding.registerButton.icon = progressIndicatorDrawable
+            binding.registerButton.apply {
+                icon = progressIndicatorDrawable
+                isClickable = false
+                isEnabled = false
+            }
         } else {
-            binding.registerButton.icon = null
+            if (!state.name.isNullOrEmpty() && state.emailAddress != null && state.password != null) {
+                binding.registerButton.apply {
+                    icon = null
+                    isClickable = true
+                    isEnabled = true
+                }
+            } else {
+                binding.registerButton.apply {
+                    icon = null
+                    isClickable = false
+                    isEnabled = false
+                }
+            }
         }
         state.registerResult.fold({}, { either ->
             either.fold({ failure ->
