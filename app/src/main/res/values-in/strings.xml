@@ -27,5 +27,20 @@
     <string name="logout_message">Apakah anda yakin ingin keluar?</string>
     <string name="yes">Ya</string>
     <string name="no">Tidak</string>
+    <string name="preview_image_upload">Preview Image Upload</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="description">Deskripsi</string>
+    <string name="upload">Unggah</string>
+    <string name="save">Simpan</string>
+    <string name="submit">Kirim</string>
+    <string name="empty_description">Deskripsi tidak boleh kosong</string>
+    <string name="empty_image">Gambar tidak boleh kosong</string>
+    <string name="create_story_success">Berhasil membuat cerita baru</string>
+    <string name="take_photo">Ambil Photo</string>
+    <string name="start_capture">Mulai Merekam</string>
+    <string name="stop_capture">Berhenti Merekam</string>
+    <string name="flip_camera">Flip Camera</string>
+    <string name="camera_preview_back_button">Camera preview back</string>
 
 </resources>

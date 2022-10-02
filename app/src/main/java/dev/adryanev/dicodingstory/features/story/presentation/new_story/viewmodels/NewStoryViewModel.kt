@@ -5,19 +5,30 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import arrow.core.Option
+import arrow.core.none
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.adryanev.dicodingstory.R
 import dev.adryanev.dicodingstory.core.domain.usecases.NoParams
 import dev.adryanev.dicodingstory.core.presentations.mvi.MviViewModel
+import dev.adryanev.dicodingstory.core.utils.resource.ResourceProvider
+import dev.adryanev.dicodingstory.core.utils.toOneTimeEvent
 import dev.adryanev.dicodingstory.features.authentication.domain.entities.User
 import dev.adryanev.dicodingstory.features.authentication.domain.usecases.GetLoggedInUser
+import dev.adryanev.dicodingstory.features.story.domain.entities.StoryForm
+import dev.adryanev.dicodingstory.features.story.domain.usecases.CreateNewStory
+import dev.adryanev.dicodingstory.features.story.domain.usecases.CreateNewStoryParams
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class NewStoryViewModel @Inject constructor(
     private val getLoggedInUser: GetLoggedInUser,
+    private val createNewStory: CreateNewStory,
+    private val resourceProvider: ResourceProvider,
 ) : ViewModel(), MviViewModel<NewStoryState> {
 
     private val _state = MutableStateFlow(NewStoryState.initial())
@@ -28,24 +39,99 @@ class NewStoryViewModel @Inject constructor(
         getUser()
     }
 
-    fun getUser() {
+    private fun getUser() {
         viewModelScope.launch {
-            getLoggedInUser(NoParams).collectLatest {
-                _state.value = _state.value.copy(
-                    getLoggedInUser = Option.fromNullable(it)
-                )
+            _state.update {
+                it.copy(isLoading = true)
+            }
+            getLoggedInUser(NoParams).collectLatest { either ->
+                _state.update {
+                    it.copy(getLoggedInUser = Option.fromNullable(either))
+                }
+                _state.update {
+                    it.copy(isLoading = false, getLoggedInUser = none())
+                }
+
             }
         }
     }
 
     fun setUser(user: User?) {
-        _state.value = _state.value.copy(loggedInUser = user)
+        _state.update {
+            it.copy(loggedInUser = user)
+        }
     }
 
     fun descriptionChanged(description: String) {
-        _state.value = _state.value.copy(
-            description = description
-        )
+        _state.update {
+            it.copy(description = description)
+        }
+
+    }
+
+    fun setStroyPicture(
+        picture: File
+    ) {
+        _state.update {
+            it.copy(
+                storyPicture = picture
+            )
+        }
+    }
+
+    fun uploadStory() {
+        val picture = _state.value.storyPicture
+        val description = _state.value.description
+
+        if (picture == null) {
+            _state.update {
+                it.copy(
+                    errorMessage = resourceProvider.getString(R.string.empty_image).toOneTimeEvent()
+                )
+            }
+            _state.update {
+                it.copy(
+                    errorMessage = null
+                )
+            }
+            return
+        }
+        if (description.isNullOrEmpty()) {
+            _state.update {
+                it.copy(
+                    errorMessage = resourceProvider.getString(R.string.empty_description)
+                        .toOneTimeEvent()
+                )
+            }
+            _state.update {
+                it.copy(
+                    errorMessage = null
+                )
+            }
+            return
+        }
+
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true) }
+            createNewStory(
+                CreateNewStoryParams(
+                    StoryForm(
+                        description = description,
+                        location = null,
+                        photo = picture
+                    )
+                )
+            ).collectLatest { either ->
+                _state.update {
+                    it.copy(
+                        createNewStory = Option.fromNullable(either)
+                    )
+                }
+                _state.update {
+                    it.copy(isLoading = false, createNewStory = none())
+                }
+            }
+        }
 
     }
 

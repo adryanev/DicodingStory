@@ -14,12 +14,12 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import dev.adryanev.dicodingstory.R
 import dev.adryanev.dicodingstory.core.presentations.error_handler.handleError
 import dev.adryanev.dicodingstory.core.presentations.flowRefresh
 import dev.adryanev.dicodingstory.core.presentations.mvi.MviView
+import dev.adryanev.dicodingstory.core.presentations.setSingleClick
 import dev.adryanev.dicodingstory.databinding.FragmentStoryListBinding
 import dev.adryanev.dicodingstory.features.story.domain.entities.Story
 import dev.adryanev.dicodingstory.features.story.presentation.story_list.pages.adapters.StoryListAdapter
@@ -63,8 +63,15 @@ class StoryFragment : Fragment(), MviView<StoryListState> {
 
             }
         }
+        binding.storyFabAddStory.setSingleClick {
+            navigateToCreateNewStory()
+        }
 
         return binding.root
+    }
+
+    private fun navigateToCreateNewStory() {
+        findNavController().navigate(StoryFragmentDirections.actionStoryFragmentToNewStoryFragment())
     }
 
     private fun logoutUser() {
@@ -165,8 +172,8 @@ class StoryFragment : Fragment(), MviView<StoryListState> {
     }
 
     override fun onDestroyView() {
-        _binding = null
         super.onDestroyView()
+        _binding = null
     }
 
 }
