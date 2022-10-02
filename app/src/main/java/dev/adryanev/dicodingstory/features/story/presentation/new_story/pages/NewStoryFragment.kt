@@ -1,9 +1,14 @@
 package dev.adryanev.dicodingstory.features.story.presentation.new_story.pages
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.content.Intent.ACTION_GET_CONTENT
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -21,6 +26,7 @@ import dev.adryanev.dicodingstory.core.presentations.error_handler.showToast
 import dev.adryanev.dicodingstory.core.presentations.mvi.MviView
 import dev.adryanev.dicodingstory.core.presentations.setSingleClick
 import dev.adryanev.dicodingstory.core.utils.consumeOnce
+import dev.adryanev.dicodingstory.core.utils.uriToFile
 import dev.adryanev.dicodingstory.databinding.FragmentNewStoryBinding
 import dev.adryanev.dicodingstory.features.story.presentation.new_story.viewmodels.NewStoryState
 import dev.adryanev.dicodingstory.features.story.presentation.new_story.viewmodels.NewStoryViewModel
@@ -34,6 +40,15 @@ class NewStoryFragment : Fragment(), MviView<NewStoryState> {
         get() = _binding!!
 
     private val viewModel: NewStoryViewModel by activityViewModels()
+
+    private val galleryLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val selectedImg: Uri = result.data?.data as Uri
+                val file = uriToFile(selectedImg, requireContext())
+                viewModel.setStroyPicture(file)
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -53,7 +68,9 @@ class NewStoryFragment : Fragment(), MviView<NewStoryState> {
             newStoryCameraButton.setSingleClick {
                 startTakePhoto()
             }
-            newStoryGalleryButton.setSingleClick { }
+            newStoryGalleryButton.setSingleClick {
+                startGallery()
+            }
             newStoryUploadButton.setSingleClick {
                 viewModel.uploadStory()
             }
@@ -66,6 +83,14 @@ class NewStoryFragment : Fragment(), MviView<NewStoryState> {
             .into(binding.newStoryPreviewImage)
 
         return binding.root
+    }
+
+    private fun startGallery() {
+        val intent = Intent()
+        intent.action = ACTION_GET_CONTENT
+        intent.type = "image/*"
+        val chooser = Intent.createChooser(intent, getString(R.string.choose_a_picture))
+        galleryLauncher.launch(chooser)
     }
 
     private fun startTakePhoto() {
@@ -144,5 +169,6 @@ class NewStoryFragment : Fragment(), MviView<NewStoryState> {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        viewModel.reset()
     }
 }

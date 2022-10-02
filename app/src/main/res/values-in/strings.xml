@@ -40,7 +40,8 @@
     <string name="take_photo">Ambil Photo</string>
     <string name="start_capture">Mulai Merekam</string>
     <string name="stop_capture">Berhenti Merekam</string>
-    <string name="flip_camera">Flip Camera</string>
-    <string name="camera_preview_back_button">Camera preview back</string>
+    <string name="flip_camera">Putar Camera</string>
+    <string name="camera_preview_back_button">Camera preview kembali</string>
+    <string name="choose_a_picture">Pilih sebuah gambar</string>
 
 </resources>

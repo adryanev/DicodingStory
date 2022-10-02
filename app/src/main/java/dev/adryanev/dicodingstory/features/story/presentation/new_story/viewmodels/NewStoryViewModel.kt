@@ -135,5 +135,11 @@ class NewStoryViewModel @Inject constructor(
 
     }
 
+    fun reset() {
+        _state.update {
+            NewStoryState.initial()
+        }
+    }
+
 
 }
