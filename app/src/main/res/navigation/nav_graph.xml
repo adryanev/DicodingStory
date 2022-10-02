@@ -63,8 +63,18 @@
     <fragment
         android:id="@+id/newStoryFragment"
         android:name="dev.adryanev.dicodingstory.features.story.presentation.new_story.pages.NewStoryFragment"
-        android:label="fragment_new_story"
-        tools:layout="@layout/fragment_new_story" />
+        android:label="@string/add_new_story"
+        tools:layout="@layout/fragment_new_story">
+        <action
+            android:id="@+id/action_newStoryFragment_to_cameraPreviewFragment"
+            app:destination="@id/cameraPreviewFragment" />
+        <action
+            android:id="@+id/action_newStoryFragment_to_storyFragment"
+            app:destination="@id/storyFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/newStoryFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/storyDetailFragment"
         android:name="dev.adryanev.dicodingstory.features.story.presentation.story_detail.pages.StoryDetailFragment"
@@ -74,5 +84,10 @@
             android:name="story"
             app:argType="dev.adryanev.dicodingstory.features.story.domain.entities.Story" />
     </fragment>
+    <fragment
+        android:id="@+id/cameraPreviewFragment"
+        android:name="dev.adryanev.dicodingstory.shared.presentation.pages.CameraPreviewFragment"
+        android:label="fragment_camera_preview"
+        tools:layout="@layout/fragment_camera_preview" />
 
 </navigation>

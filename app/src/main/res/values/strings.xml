@@ -27,4 +27,19 @@
     <string name="detail_story">Detail Story</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="preview_image_upload">Preview Image Upload</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="description">Description</string>
+    <string name="upload">Upload</string>
+    <string name="save">Save</string>
+    <string name="submit">Submit</string>
+    <string name="empty_description">Description cannot be empty</string>
+    <string name="empty_image">Image cannot be empty</string>
+    <string name="create_story_success">Success creating new story</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="start_capture">Start Capture</string>
+    <string name="stop_capture">Stop Capture</string>
+    <string name="flip_camera">Flip Camera</string>
+    <string name="camera_preview_back_button">Camera preview back</string>
 </resources>

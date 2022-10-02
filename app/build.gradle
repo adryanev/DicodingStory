@@ -38,7 +38,6 @@ android {
     }
     buildFeatures {
         viewBinding true
-        dataBinding true
     }
     kapt {
         correctErrorTypes true
@@ -102,6 +101,11 @@ dependencies {
     //Image
     implementation 'com.squareup.picasso:picasso:2.8'
 
+    //Camera X
+    implementation "androidx.camera:camera-camera2:1.1.0"
+    implementation "androidx.camera:camera-lifecycle:1.1.0"
+    implementation "androidx.camera:camera-view:1.1.0"
+    implementation "androidx.camera:camera-extensions:1.1.0"
 
     //Testing
     testImplementation 'junit:junit:4.13.2'

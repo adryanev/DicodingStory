@@ -17,4 +17,9 @@
     <style name="Theme.DicodingStory.CircularProgressIndicator.ExtraSmall.White" parent="Widget.Material3.CircularProgressIndicator.ExtraSmall">
         <item name="tint">@color/primaryTextColor</item>
     </style>
+
+    <style name="ThemeOverlay.DicodingStory.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
+        <item name="fullscreenTextColor">@color/light_blue_A200</item>
+    </style>
 </resources>

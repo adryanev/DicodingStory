@@ -28,7 +28,7 @@ object NetworkModule {
     @Provides
     @NonAuthInterceptorOkHttp
     fun provideOkHttpWithoutAuth(): OkHttpClient = OkHttpClient.Builder()
-        .addNetworkInterceptor(HttpLoggingInterceptor())
+        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         .addNetworkInterceptor(StethoInterceptor())
         .build()
 
@@ -38,7 +38,7 @@ object NetworkModule {
     fun provideOkHttpWithAuth(authInterceptor: AuthInterceptor): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
-            .addNetworkInterceptor(HttpLoggingInterceptor())
+            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .addNetworkInterceptor(StethoInterceptor())
             .build()
 

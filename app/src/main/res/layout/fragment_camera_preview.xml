@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".shared.presentation.pages.CameraPreviewFragment">
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/camera_view_finder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageButton
+        android:id="@+id/camera_preview_back_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="top|start"
+        android:layout_margin="16dp"
+        android:background="@drawable/ic_baseline_arrow_back_24"
+        android:contentDescription="@string/camera_preview_back_button" />
+
+
+    <ImageButton
+        android:id="@+id/camera_preview_flip_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="top|end"
+        android:layout_margin="16dp"
+        android:background="@drawable/ic_baseline_flip_camera_android_24"
+        android:contentDescription="@string/flip_camera" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/image_capture_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="32dp"
+        android:contentDescription="@string/take_photo"
+        android:src="@drawable/ic_baseline_photo_camera_24" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

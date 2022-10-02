@@ -13,10 +13,13 @@ import dev.adryanev.dicodingstory.features.story.data.models.CreateStoryPayload
 import dev.adryanev.dicodingstory.features.story.data.models.CreateStoryResponse
 import dev.adryanev.dicodingstory.features.story.data.models.StoryResponse
 import kotlinx.coroutines.CoroutineDispatcher
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import javax.inject.Inject
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+import javax.inject.Inject
 
 class StoryRemoteDataSourceImpl @Inject constructor(
     private val authenticatedStoryService: AuthenticatedStoryService,
@@ -46,11 +49,15 @@ class StoryRemoteDataSourceImpl @Inject constructor(
             adapter = adapter,
             retrofitCall = {
                 authenticatedStoryService.addNewStory(
-                    payload = payload,
+                    description = payload.description?.toRequestBody("text/plain".toMediaType())
+                        ?: "".toRequestBody(),
+
                     photo = MultipartBody.Part.createFormData(
                         "photo", photo.name,
-                        photo.asRequestBody()
-                    )
+                        photo.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                    ),
+                    lat = payload.latitude?.toString()?.toRequestBody("text/plain".toMediaType()),
+                    lon = payload.longitude?.toString()?.toRequestBody("text/plain".toMediaType()),
                 )
             }
         )
