@@ -15,6 +15,7 @@ import dev.adryanev.dicodingstory.core.networks.interceptors.AuthInterceptor
 import dev.adryanev.dicodingstory.core.networks.models.ErrorResponse
 import dev.adryanev.dicodingstory.core.utils.NetworkConstants
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
@@ -27,6 +28,7 @@ object NetworkModule {
     @Provides
     @NonAuthInterceptorOkHttp
     fun provideOkHttpWithoutAuth(): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         .addNetworkInterceptor(StethoInterceptor())
         .build()
 
@@ -36,6 +38,7 @@ object NetworkModule {
     fun provideOkHttpWithAuth(authInterceptor: AuthInterceptor): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
+            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .addNetworkInterceptor(StethoInterceptor())
             .build()
 

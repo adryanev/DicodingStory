@@ -2,11 +2,15 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
 
 }
 
 android {
     compileSdk 33
+    namespace "dev.adryanev.dicodingstory"
 
     defaultConfig {
         applicationId "dev.adryanev.dicodingstory"
@@ -25,6 +29,7 @@ android {
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled = true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -33,12 +38,15 @@ android {
     }
     buildFeatures {
         viewBinding true
-        dataBinding true
+    }
+    kapt {
+        correctErrorTypes true
     }
 }
 
 dependencies {
-//    implementation project(':functional-programming')
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
+
     //KTX
     implementation 'androidx.core:core-ktx:1.9.0'
 
@@ -47,7 +55,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.6.1'
 
     //Android Annotation
-    implementation 'androidx.annotation:annotation:1.4.0'
+    implementation 'androidx.annotation:annotation:1.5.0'
 
     //Constraint Layout
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -56,27 +64,48 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
 
+    //Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:2.5.2"
+    implementation "androidx.navigation:navigation-ui-ktx:2.5.2"
+
     //Logging
     implementation 'com.jakewharton.timber:timber:5.0.1'
 
     //Network
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
 
     //JSON Serializable
     implementation "com.squareup.moshi:moshi:1.14.0"
-    annotationProcessor 'com.squareup.moshi:moshi-kotlin-codegen:1.14.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.14.0'
 
     //Stetho
     implementation 'com.facebook.stetho:stetho:1.5.1'
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
 
     //Injection
-    implementation "com.google.dagger:hilt-android:2.38.1"
-    annotationProcessor "com.google.dagger:hilt-compiler:2.38.1"
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-compiler:2.44"
 
     //Arrow
     implementation "io.arrow-kt:arrow-core:1.0.1"
+
+    //Location
+    implementation 'com.google.android.gms:play-services-location:20.0.0'
+
+    //Image
+    implementation 'com.squareup.picasso:picasso:2.8'
+
+    //Camera X
+    implementation "androidx.camera:camera-camera2:1.1.0"
+    implementation "androidx.camera:camera-lifecycle:1.1.0"
+    implementation "androidx.camera:camera-view:1.1.0"
+    implementation "androidx.camera:camera-extensions:1.1.0"
 
     //Testing
     testImplementation 'junit:junit:4.13.2'

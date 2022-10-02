@@ -10,10 +10,16 @@ import dev.adryanev.dicodingstory.core.utils.resource.ResourceProvider
 import dev.adryanev.dicodingstory.core.utils.resource.ResourceProviderImpl
 import dev.adryanev.dicodingstory.features.authentication.data.datasources.local.AuthenticationLocalDataSource
 import dev.adryanev.dicodingstory.features.authentication.data.datasources.local.AuthenticationLocalDataSourceImpl
-import dev.adryanev.dicodingstory.features.authentication.data.datasources.networks.AuthenticationRemoteDataSource
-import dev.adryanev.dicodingstory.features.authentication.data.datasources.networks.AuthenticationRemoteDataSourceImpl
+import dev.adryanev.dicodingstory.features.authentication.data.datasources.remote.AuthenticationRemoteDataSource
+import dev.adryanev.dicodingstory.features.authentication.data.datasources.remote.AuthenticationRemoteDataSourceImpl
 import dev.adryanev.dicodingstory.features.authentication.data.repositories.AuthenticationRepositoryImpl
 import dev.adryanev.dicodingstory.features.authentication.domain.repositories.AuthenticationRepository
+import dev.adryanev.dicodingstory.features.story.data.datasources.remote.StoryRemoteDataSource
+import dev.adryanev.dicodingstory.features.story.data.datasources.remote.StoryRemoteDataSourceImpl
+import dev.adryanev.dicodingstory.features.story.data.repositories.StoryRepositoryImpl
+import dev.adryanev.dicodingstory.features.story.domain.repositories.StoryRepository
+import dev.adryanev.dicodingstory.services.locations.data.repositories.LocationRepositoryImpl
+import dev.adryanev.dicodingstory.services.locations.domain.repositories.LocationRepository
 import javax.inject.Singleton
 
 @Module
@@ -28,9 +34,14 @@ abstract class BindingModule {
     @Binds
     abstract fun bindResourceProvider(resourceProviderImpl: ResourceProviderImpl): ResourceProvider
 
+    // =====================LOCATION BINDINGS==============================
 
-    // AUTHENTICATION BINDINGS
+    @Singleton
+    @Binds
+    abstract fun bindLocationRepository(locationRepositoryImpl: LocationRepositoryImpl): LocationRepository
 
+
+    // =====================AUTHENTICATION BINDINGS========================
     @Singleton
     @Binds
     abstract fun bindAuthenticationRemoteSource(
@@ -48,4 +59,15 @@ abstract class BindingModule {
     abstract fun bindAuthenticationRepository(
         authenticationRepositoryImpl: AuthenticationRepositoryImpl
     ): AuthenticationRepository
+
+    // =====================STORY BINDINGS========================
+    @Singleton
+    @Binds
+    abstract fun bindStoryRemoteSource(
+        storyRemoteDataSource: StoryRemoteDataSourceImpl
+    ): StoryRemoteDataSource
+
+    @Singleton
+    @Binds
+    abstract fun bindStoryRepository(storyRepositoryImpl: StoryRepositoryImpl): StoryRepository
 }

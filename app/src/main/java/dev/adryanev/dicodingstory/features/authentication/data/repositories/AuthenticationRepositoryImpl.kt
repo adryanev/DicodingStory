@@ -5,7 +5,7 @@ import dev.adryanev.dicodingstory.core.di.annotations.IoDispatcher
 import dev.adryanev.dicodingstory.core.domain.failures.Failure
 import dev.adryanev.dicodingstory.core.domain.failures.SharedPreferenceFailure
 import dev.adryanev.dicodingstory.features.authentication.data.datasources.local.AuthenticationLocalDataSource
-import dev.adryanev.dicodingstory.features.authentication.data.datasources.networks.AuthenticationRemoteDataSource
+import dev.adryanev.dicodingstory.features.authentication.data.datasources.remote.AuthenticationRemoteDataSource
 import dev.adryanev.dicodingstory.features.authentication.data.models.login.LoginPayload
 import dev.adryanev.dicodingstory.features.authentication.data.models.login.toDomain
 import dev.adryanev.dicodingstory.features.authentication.data.models.register.RegisterPayload
