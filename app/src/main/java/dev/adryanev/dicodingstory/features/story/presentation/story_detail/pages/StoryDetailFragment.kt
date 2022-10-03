@@ -23,7 +23,7 @@ class StoryDetailFragment : Fragment() {
     private var _binding: FragmentStoryDetailBinding? = null
 
     private val binding: FragmentStoryDetailBinding
-        get() = _binding!!
+        get() = _binding ?: throw UninitializedPropertyAccessException()
 
     private val args: StoryDetailFragmentArgs by navArgs()
 

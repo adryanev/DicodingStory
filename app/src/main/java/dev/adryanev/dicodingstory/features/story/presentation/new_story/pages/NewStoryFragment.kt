@@ -37,7 +37,7 @@ class NewStoryFragment : Fragment(), MviView<NewStoryState> {
 
     private var _binding: FragmentNewStoryBinding? = null
     private val binding: FragmentNewStoryBinding
-        get() = _binding!!
+        get() = _binding ?: throw UninitializedPropertyAccessException()
 
     private val viewModel: NewStoryViewModel by activityViewModels()
 

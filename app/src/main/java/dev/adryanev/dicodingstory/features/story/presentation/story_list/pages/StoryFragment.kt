@@ -38,7 +38,7 @@ class StoryFragment : Fragment(), MviView<StoryListState> {
     private val viewModel: StoryListViewModel by viewModels()
     private var _binding: FragmentStoryListBinding? = null
     private val binding: FragmentStoryListBinding
-        get() = _binding!!
+        get() = _binding ?: throw UninitializedPropertyAccessException()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?

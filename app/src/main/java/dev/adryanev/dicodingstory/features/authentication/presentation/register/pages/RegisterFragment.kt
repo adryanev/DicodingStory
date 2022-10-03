@@ -30,7 +30,7 @@ class RegisterFragment : Fragment(), MviView<RegisterFormViewState> {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding: FragmentRegisterBinding
-        get() = _binding!!
+        get() = _binding ?: throw UninitializedPropertyAccessException()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?

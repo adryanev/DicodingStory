@@ -84,7 +84,8 @@
                     android:hint="@string/description"
                     android:inputType="textMultiLine"
                     android:singleLine="false"
-                    android:textColorHint="#546E7A" />
+                    android:textColorHint="@color/text_input_hint"
+                    tools:ignore="TextContrastCheck" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton

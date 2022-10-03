@@ -28,7 +28,7 @@ class LoginFragment : Fragment(), MviView<LoginFormViewState> {
     private val viewModel: LoginFormViewModel by viewModels()
     private var _binding: FragmentLoginBinding? = null
     private val binding: FragmentLoginBinding
-        get() = _binding!!
+        get() = _binding ?: throw UninitializedPropertyAccessException()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?

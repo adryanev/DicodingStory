@@ -26,7 +26,7 @@ class SplashFragment : Fragment(), MviView<SplashViewState> {
 
     private var _binding: FragmentSplashBinding? = null
     private val binding: FragmentSplashBinding
-        get() = _binding!!
+        get() = _binding ?: throw UninitializedPropertyAccessException()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

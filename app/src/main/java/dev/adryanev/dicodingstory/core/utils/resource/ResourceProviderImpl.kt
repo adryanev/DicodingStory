@@ -1,7 +1,6 @@
 package dev.adryanev.dicodingstory.core.utils.resource
 
 import android.content.Context
-import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
