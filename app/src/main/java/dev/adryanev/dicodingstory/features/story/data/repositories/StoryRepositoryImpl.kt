@@ -19,9 +19,11 @@ class StoryRepositoryImpl @Inject constructor(
     private val storyRemoteDataSource: StoryRemoteDataSource,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : StoryRepository {
-    override suspend fun getLatestStory(): Flow<Either<Failure, List<Story>>> {
+    override suspend fun getLatestStory(
+        page: Int?,
+    ): Flow<Either<Failure, List<Story>>> {
         return flow {
-            val result = storyRemoteDataSource.getStories()
+            val result = storyRemoteDataSource.getStories(page)
             val storyList = result.map { response ->
                 response.listStory?.map {
                     it.toDomain()

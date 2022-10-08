@@ -28,12 +28,12 @@ class StoryRemoteDataSourceImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val adapter: JsonAdapter<ErrorResponse>,
 ) : StoryRemoteDataSource {
-    override suspend fun getStories(): Either<Failure, StoryResponse> {
+    override suspend fun getStories(page: Int?, size: Int?): Either<Failure, StoryResponse> {
         return safeCall(middlewares = middlewareProvider.getAll(),
             ioDispatcher = ioDispatcher,
             adapter = adapter,
             retrofitCall = {
-                authenticatedStoryService.getStories()
+                authenticatedStoryService.getStories(page, size)
             })
     }
 

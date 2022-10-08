@@ -18,3 +18,11 @@ class ViewConstants {
         const val THRESHOLD_CLICK_TIME = 250
     }
 }
+
+class DatabaseConstants {
+    companion object {
+        const val DATABASE_NAME = "dicodingstory.db"
+        const val STORY_TABLE = "stories"
+        const val STORY_REMOTE_KEY = "story_remote_keys"
+    }
+}
