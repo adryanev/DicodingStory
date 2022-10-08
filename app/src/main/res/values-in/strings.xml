@@ -45,5 +45,7 @@
     <string name="choose_a_picture">Pilih sebuah gambar</string>
     <string name="list">Daftar</string>
     <string name="map">Peta</string>
+    <string name="get_my_location">Dapatkan lokasi</string>
+    <string name="no_location_detected">Lokasi belum ditemukan</string>
 
 </resources>

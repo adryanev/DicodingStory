@@ -45,4 +45,6 @@
     <string name="choose_a_picture">Choose a Picture</string>
     <string name="list">List</string>
     <string name="map">Map</string>
+    <string name="get_my_location">Get location</string>
+    <string name="no_location_detected">No Location Detected</string>
 </resources>

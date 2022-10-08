@@ -53,7 +53,6 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.android.gms:play-services-maps:18.1.0'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
 
     //KTX
@@ -106,6 +105,10 @@ dependencies {
 
     //Location
     implementation 'com.google.android.gms:play-services-location:20.0.0'
+
+    //Maps
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+
 
     //Image
     implementation 'com.squareup.picasso:picasso:2.8'

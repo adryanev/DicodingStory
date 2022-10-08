@@ -102,6 +102,32 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/new_story_description_text_input_layout"
                 tools:text="@string/upload" />
+
+            <TextView
+                android:id="@+id/new_story_coordinates"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/no_location_detected"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:layout_constraintEnd_toStartOf="@+id/new_story_get_coordinates"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/new_story_description_text_input_layout"
+                tools:text="@string/coordinates" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/new_story_get_coordinates"
+                style="@style/Widget.Material3.Button.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/get_my_location"
+                app:icon="@drawable/ic_baseline_location_on_24"
+                app:layout_constraintBottom_toBottomOf="@+id/new_story_coordinates"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/new_story_coordinates"
+                app:layout_constraintTop_toTopOf="@+id/new_story_coordinates" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
