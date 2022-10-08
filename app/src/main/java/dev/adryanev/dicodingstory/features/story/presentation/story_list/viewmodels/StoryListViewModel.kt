@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import arrow.core.Option
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.adryanev.dicodingstory.core.presentations.mvi.MviViewModel
@@ -29,18 +30,20 @@ class StoryListViewModel @Inject constructor(
     }
 
     private fun latestStory(page: Int? = 1) {
+
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }
 
-            getLatestStory(GetLatestStoryParams(page)).collectLatest { either ->
+            getLatestStory(GetLatestStoryParams(page)).cachedIn(viewModelScope)
+                .collectLatest { either ->
 
-                _state.update {
-                    it.copy(storyList = Option.fromNullable(either))
+                    _state.update {
+                        it.copy(storyList = Option.fromNullable(either))
+                    }
+                    _state.update {
+                        it.copy(isLoading = false)
+                    }
                 }
-                _state.update {
-                    it.copy(isLoading = false)
-                }
-            }
         }
     }
 
@@ -51,24 +54,25 @@ class StoryListViewModel @Inject constructor(
             _state.update {
                 it.copy(isRefresh = true, isLoading = true)
             }
-            getLatestStory(GetLatestStoryParams(1)).collectLatest { either ->
+            getLatestStory(GetLatestStoryParams(1)).cachedIn(viewModelScope)
+                .collectLatest { either ->
 
-                _state.update {
-                    it.copy(
-                        storyList = Option.fromNullable(either),
+                    _state.update {
+                        it.copy(
+                            storyList = Option.fromNullable(either),
 
+                            )
+                    }
+
+                    _state.update {
+                        it.copy(
+                            isRefresh = false,
+                            isLoading = false
                         )
+                    }
+
+
                 }
-
-                _state.update {
-                    it.copy(
-                        isRefresh = false,
-                        isLoading = false
-                    )
-                }
-
-
-            }
         }
 
 

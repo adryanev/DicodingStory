@@ -1,5 +1,6 @@
 package dev.adryanev.dicodingstory.core.di
 
+import androidx.paging.PagingConfig
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -56,4 +57,8 @@ object ApplicationModule {
                 connectivityUtils = connectivityUtils
             )
         ).build()
+
+    @Singleton
+    @Provides
+    fun providePagingConfig(): PagingConfig = PagingConfig(pageSize = 10)
 }

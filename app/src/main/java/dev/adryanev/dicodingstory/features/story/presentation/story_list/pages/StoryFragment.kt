@@ -4,16 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.distinctUntilChanged
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.*
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
-import dev.adryanev.dicodingstory.core.presentations.error_handler.handleError
 import dev.adryanev.dicodingstory.core.presentations.flowRefresh
 import dev.adryanev.dicodingstory.core.presentations.mvi.MviView
 import dev.adryanev.dicodingstory.core.presentations.setSingleClick
@@ -25,6 +25,7 @@ import dev.adryanev.dicodingstory.features.story.presentation.story_list.viewmod
 import dev.adryanev.dicodingstory.features.story.presentation.story_list.viewmodels.StoryListViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -64,6 +65,30 @@ class StoryFragment : Fragment(), MviView<StoryListState> {
         viewModel.state.distinctUntilChanged().observe(
             viewLifecycleOwner, Observer(::render)
         )
+
+        val adapter = binding.storyRecyclerView.adapter as StoryListAdapter
+
+        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                if (positionStart == 0) {
+                    binding.storyRecyclerView.smoothScrollToPosition(0)
+
+                }
+            }
+        })
+
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                adapter.loadStateFlow.collect {
+                    binding.storyAppendProgress.isVisible = it.source.append is LoadState.Loading
+                    binding.storyPrependProgress.isVisible = it.source.append is LoadState.Loading
+                  
+                }
+            }
+        }
+
+
     }
 
     private fun initView() {
@@ -96,26 +121,18 @@ class StoryFragment : Fragment(), MviView<StoryListState> {
         with(state) {
             binding.storySwipeRefreshLayout.isRefreshing = isRefresh
 
+            storyList.fold({}, { pagingData ->
+                Timber.i("Story fetched Successfully: $pagingData")
+                val adapter = binding.storyRecyclerView.adapter as StoryListAdapter
+                lifecycleScope.launch {
+                    repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        adapter.submitData(pagingData)
 
-            storyList.fold({}, { either ->
-                either.fold({ failure ->
-                    requireContext().handleError(failure)
-                }, { stories ->
-                    val adapter = binding.storyRecyclerView.adapter as StoryListAdapter
-                    Timber.i("Story fetched Successfully: $stories")
-                    if (adapter.currentList.isEmpty()) {
-                        adapter.submitList(stories) {}
-                    } else {
-                        if (adapter.currentList.firstOrNull()?.id != stories.firstOrNull()?.id) {
-                            adapter.submitList(stories) {
-                                binding.storyRecyclerView.smoothScrollToPosition(0)
-                            }
-                        }
                     }
+                }
 
-
-                })
             })
+
         }
     }
 
