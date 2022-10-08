@@ -1,5 +1,6 @@
 package dev.adryanev.dicodingstory.features.story.presentation.story_maps.viewmodels
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -16,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
 class StoryMapsViewModel @Inject constructor(
-    val getLatestStoryWithLocation: GetLatestStoryWithLocation
+    private val getLatestStoryWithLocation: GetLatestStoryWithLocation
 ) : ViewModel(), MviViewModel<StoryMapsState> {
     private val _state = MutableStateFlow(StoryMapsState.initial())
     override val state: LiveData<StoryMapsState>
@@ -25,7 +26,7 @@ class StoryMapsViewModel @Inject constructor(
     init {
         loadStoryWithLocation()
     }
-
+    @VisibleForTesting
     private fun loadStoryWithLocation() {
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }

@@ -51,9 +51,16 @@ android {
     kapt {
         correctErrorTypes true
     }
+
+    testOptions {
+        unitTests.includeAndroidResources = true
+        unitTests.returnDefaultValues = true
+
+    }
 }
 
 dependencies {
+    testImplementation 'junit:junit:4.12'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
 
     //KTX
@@ -134,11 +141,24 @@ dependencies {
 
     //Testing
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    // Optional -- Robolectric environment
-    testImplementation 'androidx.test:core:1.4.0'
-    // Optional -- Mockito framework
-    testImplementation 'org.mockito:mockito-core:1.10.19'
+    testImplementation 'app.cash.turbine:turbine:0.11.0'
+    testImplementation "org.mockito:mockito-inline:4.8.0"
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
 
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    implementation "androidx.test.espresso:espresso-idling-resource:3.4.0"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    // Optional -- Mockito framework
+    testImplementation 'org.mockito:mockito-core:4.8.0'
+    androidTestImplementation "androidx.navigation:navigation-testing:2.5.2"
+    androidTestImplementation "org.mockito:mockito-android:4.8.0"
+    androidTestImplementation "junit:junit:4.13.2"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:3.4.0"
+    androidTestImplementation "androidx.test:runner:1.4.0"
+    androidTestImplementation "androidx.test:rules:1.4.0"
+    androidTestImplementation "androidx.test.ext:junit-ktx:1.1.3"
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+
 }
