@@ -43,5 +43,7 @@
     <string name="flip_camera">Putar Camera</string>
     <string name="camera_preview_back_button">Camera preview kembali</string>
     <string name="choose_a_picture">Pilih sebuah gambar</string>
+    <string name="list">Daftar</string>
+    <string name="map">Peta</string>
 
 </resources>

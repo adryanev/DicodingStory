@@ -1,4 +1,4 @@
-package dev.adryanev.dicodingstory.features.story.presentation.story_list.viewmodels
+package dev.adryanev.dicodingstory.features.story.presentation.story_maps.viewmodels
 
 import arrow.core.Either
 import arrow.core.Option
@@ -7,16 +7,14 @@ import dev.adryanev.dicodingstory.core.domain.failures.Failure
 import dev.adryanev.dicodingstory.core.presentations.mvi.MviViewState
 import dev.adryanev.dicodingstory.features.story.domain.entities.Story
 
-data class StoryListState(
+data class StoryMapsState(
     val isLoading: Boolean,
-    val isRefresh: Boolean,
-    val storyList: Option<Either<Failure, List<Story>>>,
+    val storyList: Option<Either<Failure, List<Story>>>
 ) : MviViewState {
     companion object {
-        fun initial() = StoryListState(
+        fun initial() = StoryMapsState(
             isLoading = false,
-            isRefresh = false,
-            storyList = none(),
+            storyList = none()
         )
     }
 }

@@ -26,7 +26,7 @@ class SplashFragment : Fragment(), MviView<SplashViewState> {
 
     private var _binding: FragmentSplashBinding? = null
     private val binding: FragmentSplashBinding
-        get() = _binding ?: throw UninitializedPropertyAccessException()
+        get() = _binding!! // Safe to call because it initiated first in onCreateView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,7 +81,7 @@ class SplashFragment : Fragment(), MviView<SplashViewState> {
     }
 
     private fun navigateToStory() {
-        val action = SplashFragmentDirections.actionSplashFragmentToStoryFragment()
+        val action = SplashFragmentDirections.actionSplashFragmentToStoryHomeFragment()
         navigate(action)
     }
 

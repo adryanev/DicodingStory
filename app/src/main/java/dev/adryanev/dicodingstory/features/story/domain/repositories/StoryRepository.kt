@@ -10,4 +10,5 @@ interface StoryRepository {
     suspend fun getLatestStory(): Flow<Either<Failure, List<Story>>>
     suspend fun addNewStory(storyForm: StoryForm): Flow<Either<Failure, Unit>>
     suspend fun addNewStoryAsGuest(storyForm: StoryForm): Flow<Either<Failure, Unit>>
+    suspend fun getLatestStoryWithLocation(): Flow<Either<Failure, List<Story>>>
 }

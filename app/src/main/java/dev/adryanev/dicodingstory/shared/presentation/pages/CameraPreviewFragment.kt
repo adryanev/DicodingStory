@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -111,7 +112,9 @@ class CameraPreviewFragment : Fragment() {
             }
 
             // Select back camera as a default
-            imageCapture = ImageCapture.Builder().build()
+            imageCapture = ImageCapture.Builder()
+                .setTargetResolution(Size(1080, 1920))
+                .build()
             try {
                 // Unbind use cases before rebinding
                 cameraProvider.unbindAll()

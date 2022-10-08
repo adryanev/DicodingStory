@@ -53,4 +53,15 @@ class StoryRepositoryImpl @Inject constructor(
         }.flowOn(ioDispatcher)
     }
 
+    override suspend fun getLatestStoryWithLocation(): Flow<Either<Failure, List<Story>>> =
+        flow {
+            val result = storyRemoteDataSource.getStoriesWithLocation()
+            val storyList = result.map { response ->
+                response.listStory?.map {
+                    it.toDomain()
+                }!!
+            }
+            emit(storyList)
+        }.flowOn(ioDispatcher)
+
 }

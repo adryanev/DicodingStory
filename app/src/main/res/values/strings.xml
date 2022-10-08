@@ -43,4 +43,6 @@
     <string name="flip_camera">Flip Camera</string>
     <string name="camera_preview_back_button">Camera preview back</string>
     <string name="choose_a_picture">Choose a Picture</string>
+    <string name="list">List</string>
+    <string name="map">Map</string>
 </resources>

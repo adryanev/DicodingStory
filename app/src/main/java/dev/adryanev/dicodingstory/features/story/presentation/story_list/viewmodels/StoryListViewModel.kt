@@ -5,11 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import arrow.core.Option
-import arrow.core.none
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.adryanev.dicodingstory.core.domain.usecases.NoParams
 import dev.adryanev.dicodingstory.core.presentations.mvi.MviViewModel
-import dev.adryanev.dicodingstory.features.authentication.domain.usecases.LogoutUser
 import dev.adryanev.dicodingstory.features.story.domain.usecases.GetLatestStory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -20,7 +18,6 @@ import javax.inject.Inject
 @HiltViewModel
 class StoryListViewModel @Inject constructor(
     private val getLatestStory: GetLatestStory,
-    private val logoutUser: LogoutUser,
 ) : ViewModel(), MviViewModel<StoryListState> {
 
     private val _state = MutableStateFlow(StoryListState.initial())
@@ -75,19 +72,5 @@ class StoryListViewModel @Inject constructor(
         }
 
 
-    }
-
-    fun logout() {
-        viewModelScope.launch {
-            logoutUser(NoParams).collectLatest { either ->
-                _state.update {
-                    it.copy(logout = Option.fromNullable(either))
-                }
-                _state.update {
-                    it.copy(logout = none())
-                }
-
-            }
-        }
     }
 }

@@ -29,22 +29,18 @@ class StoryRemoteDataSourceImpl @Inject constructor(
     private val adapter: JsonAdapter<ErrorResponse>,
 ) : StoryRemoteDataSource {
     override suspend fun getStories(): Either<Failure, StoryResponse> {
-        return safeCall(
-            middlewares = middlewareProvider.getAll(),
+        return safeCall(middlewares = middlewareProvider.getAll(),
             ioDispatcher = ioDispatcher,
             adapter = adapter,
             retrofitCall = {
                 authenticatedStoryService.getStories()
-            }
-        )
+            })
     }
 
     override suspend fun addStory(
-        payload: CreateStoryPayload,
-        photo: File
+        payload: CreateStoryPayload, photo: File
     ): Either<Failure, CreateStoryResponse> {
-        return safeCall(
-            middlewares = middlewareProvider.getAll(),
+        return safeCall(middlewares = middlewareProvider.getAll(),
             ioDispatcher = ioDispatcher,
             adapter = adapter,
             retrofitCall = {
@@ -53,33 +49,34 @@ class StoryRemoteDataSourceImpl @Inject constructor(
                         ?: "".toRequestBody(),
 
                     photo = MultipartBody.Part.createFormData(
-                        "photo", photo.name,
-                        photo.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                        "photo", photo.name, photo.asRequestBody("image/jpeg".toMediaTypeOrNull())
                     ),
                     lat = payload.latitude?.toString()?.toRequestBody("text/plain".toMediaType()),
                     lon = payload.longitude?.toString()?.toRequestBody("text/plain".toMediaType()),
                 )
-            }
-        )
+            })
     }
 
     override suspend fun addStoryAsGuest(
-        payload: CreateStoryPayload,
-        photo: File
+        payload: CreateStoryPayload, photo: File
     ): Either<Failure, CreateStoryResponse> {
-        return safeCall(
-            middlewares = middlewareProvider.getAll(),
+        return safeCall(middlewares = middlewareProvider.getAll(),
             ioDispatcher = ioDispatcher,
             adapter = adapter,
             retrofitCall = {
                 guestStoryService.addNewStoryAsGuest(
-                    payload = payload,
-                    photo = MultipartBody.Part.createFormData(
-                        "photo", photo.name,
-                        photo.asRequestBody()
+                    payload = payload, photo = MultipartBody.Part.createFormData(
+                        "photo", photo.name, photo.asRequestBody()
                     )
                 )
-            }
-        )
+            })
     }
+
+    override suspend fun getStoriesWithLocation(): Either<Failure, StoryResponse> = safeCall(
+        middlewares = middlewareProvider.getAll(),
+        ioDispatcher = ioDispatcher,
+        adapter = adapter,
+        retrofitCall = {
+            authenticatedStoryService.getStoriesWithLocation()
+        })
 }

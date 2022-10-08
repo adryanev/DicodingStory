@@ -22,4 +22,7 @@ interface AuthenticatedStoryService {
         @Part("lon") lon: RequestBody?,
         @Part photo: MultipartBody.Part
     ): CreateStoryResponse
+
+    @GET("stories?location=1")
+    suspend fun getStoriesWithLocation(): StoryResponse
 }

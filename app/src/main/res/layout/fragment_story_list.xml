@@ -7,17 +7,10 @@
     android:orientation="vertical"
     tools:context=".features.story.presentation.story_list.pages.StoryFragment">
 
-    <include
-        android:id="@+id/story_toolbar"
-        layout="@layout/toolbar" />
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:layout_marginTop="?actionBarSize"
         android:id="@+id/story_swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        >
+        android:layout_height="wrap_content">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/story_recycler_view"
@@ -38,8 +31,7 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:contentDescription="@string/add_new_story"
-        android:src="@drawable/ic_baseline_add_24"
-        />
+        android:src="@drawable/ic_baseline_add_24" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

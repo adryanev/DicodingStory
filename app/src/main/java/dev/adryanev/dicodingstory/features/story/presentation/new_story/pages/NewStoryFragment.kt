@@ -163,7 +163,7 @@ class NewStoryFragment : Fragment(), MviView<NewStoryState> {
     }
 
     private fun navigateToStoryList() {
-        findNavController().navigate(NewStoryFragmentDirections.actionNewStoryFragmentToStoryFragment())
+        findNavController().navigate(NewStoryFragmentDirections.actionNewStoryFragmentToStoryHomeFragment())
     }
 
     override fun onDestroyView() {
