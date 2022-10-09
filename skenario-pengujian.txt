@@ -1,0 +1,44 @@
+Unit Test:
+
+- View Model:
+    - Splash View Model
+        - checkIsLoggedInUserFound
+        - checkIsLoggedInUserNotFound
+    - Login View Model
+        - emailAddressChanged
+        - passwordChanged
+        - loginButtonPressedSuccess
+        - loginButtonPressedFailed
+    - Register View Model
+        - emailAddressChanged
+        - passwordChanged
+        - nameChanged
+        - registerButtonPressedSuccess
+        - registerButtonPressedFailed
+    - Story List View Model
+        - getStorySuccess
+        - refreshPage
+    - Story Maps View Model
+        - getGetLatestStoryWithLocationSuccess
+        - getGetLatestStoryWithLocationFailed
+    - New Story View Model
+        - getUser
+        - setUser
+        - descriptionChanged
+        - setStoryPicture
+        - uploadStory
+        - reset
+        - getUserLocation
+        - setUserLocation
+
+- Repositories
+    - Authentication Repository
+        - login
+        - logout
+        - getLoggedInUser
+    - Location Repository
+        - getCurrentLocation
+    - Story Repository
+        - getLatestStory
+        - addNewStory
+        - getLatestStoryWithLocation

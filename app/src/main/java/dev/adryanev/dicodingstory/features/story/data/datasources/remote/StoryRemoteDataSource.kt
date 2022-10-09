@@ -15,10 +15,5 @@ interface StoryRemoteDataSource {
         photo: File
     ): Either<Failure, CreateStoryResponse>
 
-    suspend fun addStoryAsGuest(
-        payload: CreateStoryPayload,
-        photo: File
-    ): Either<Failure, CreateStoryResponse>
-
     suspend fun getStoriesWithLocation(): Either<Failure, StoryResponse>
 }

@@ -1,10 +1,10 @@
 package dev.adryanev.dicodingstory.features.story.presentation.story_maps.viewmodels
 
 import arrow.core.getOrElse
+import dev.adryanev.dicodingstory.core.createStory
 import dev.adryanev.dicodingstory.core.createStoryDataFailure
 import dev.adryanev.dicodingstory.core.createStoryDataSuccess
 import dev.adryanev.dicodingstory.core.domain.usecases.NoParams
-import dev.adryanev.dicodingstory.core.expectedStoryResult
 import dev.adryanev.dicodingstory.core.presentation.viewmodels.BaseViewModelTest
 import dev.adryanev.dicodingstory.core.utils.getOrAwaitValue
 import dev.adryanev.dicodingstory.core.utils.mock
@@ -27,7 +27,7 @@ class StoryMapsViewModelTest : BaseViewModelTest() {
 
     @Before
     fun setUp() {
-        stories = expectedStoryResult()
+        stories = createStory()
     }
 
     @Test
@@ -48,13 +48,11 @@ class StoryMapsViewModelTest : BaseViewModelTest() {
                 Assert.assertFalse(state.isLoading)
                 Assert.assertNotNull(data)
 
-                if(data != null){
+                if (data != null) {
                     val story = data.firstOrNull()
                     Assert.assertNotNull(story)
                     Assert.assertEquals(stories, story)
                 }
-
-
 
             }
         }

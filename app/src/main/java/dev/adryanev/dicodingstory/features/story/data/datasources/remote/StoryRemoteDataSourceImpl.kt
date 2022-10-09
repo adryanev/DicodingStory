@@ -8,7 +8,6 @@ import dev.adryanev.dicodingstory.core.networks.middlewares.extensions.safeCall
 import dev.adryanev.dicodingstory.core.networks.middlewares.providers.MiddlewareProvider
 import dev.adryanev.dicodingstory.core.networks.models.ErrorResponse
 import dev.adryanev.dicodingstory.features.story.data.datasources.remote.services.AuthenticatedStoryService
-import dev.adryanev.dicodingstory.features.story.data.datasources.remote.services.GuestStoryService
 import dev.adryanev.dicodingstory.features.story.data.models.CreateStoryPayload
 import dev.adryanev.dicodingstory.features.story.data.models.CreateStoryResponse
 import dev.adryanev.dicodingstory.features.story.data.models.StoryResponse
@@ -23,7 +22,6 @@ import javax.inject.Inject
 
 class StoryRemoteDataSourceImpl @Inject constructor(
     private val authenticatedStoryService: AuthenticatedStoryService,
-    private val guestStoryService: GuestStoryService,
     private val middlewareProvider: MiddlewareProvider,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val adapter: JsonAdapter<ErrorResponse>,
@@ -53,21 +51,6 @@ class StoryRemoteDataSourceImpl @Inject constructor(
                     ),
                     lat = payload.latitude?.toString()?.toRequestBody("text/plain".toMediaType()),
                     lon = payload.longitude?.toString()?.toRequestBody("text/plain".toMediaType()),
-                )
-            })
-    }
-
-    override suspend fun addStoryAsGuest(
-        payload: CreateStoryPayload, photo: File
-    ): Either<Failure, CreateStoryResponse> {
-        return safeCall(middlewares = middlewareProvider.getAll(),
-            ioDispatcher = ioDispatcher,
-            adapter = adapter,
-            retrofitCall = {
-                guestStoryService.addNewStoryAsGuest(
-                    payload = payload, photo = MultipartBody.Part.createFormData(
-                        "photo", photo.name, photo.asRequestBody()
-                    )
                 )
             })
     }

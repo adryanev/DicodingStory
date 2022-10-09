@@ -28,9 +28,7 @@ class StoryRepositoryImpl @Inject constructor(
 ) : StoryRepository {
 
     @OptIn(ExperimentalPagingApi::class)
-    override suspend fun getLatestStory(
-        page: Int?,
-    ): Flow<PagingData<Story>> {
+    override suspend fun getLatestStory(): Flow<PagingData<Story>> {
         return Pager(
             pageConfig, pagingSourceFactory = {
                 localDataSource.getAllStories()
@@ -45,17 +43,6 @@ class StoryRepositoryImpl @Inject constructor(
             val photo = storyForm.photo
 
             val result = storyRemoteDataSource.addStory(payload, photo)
-
-            emit(result.map { })
-        }.flowOn(ioDispatcher)
-    }
-
-    override suspend fun addNewStoryAsGuest(storyForm: StoryForm): Flow<Either<Failure, Unit>> {
-        return flow {
-            val payload = CreateStoryPayload.fromDomain(storyForm)
-            val photo = storyForm.photo
-
-            val result = storyRemoteDataSource.addStoryAsGuest(payload, photo)
 
             emit(result.map { })
         }.flowOn(ioDispatcher)

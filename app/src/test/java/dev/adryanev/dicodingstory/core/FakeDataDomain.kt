@@ -7,9 +7,13 @@ import arrow.core.right
 import dev.adryanev.dicodingstory.core.domain.failures.Failure
 import dev.adryanev.dicodingstory.core.domain.failures.NetworkFailure
 import dev.adryanev.dicodingstory.core.domain.failures.SharedPreferenceFailure
+import dev.adryanev.dicodingstory.features.authentication.domain.entities.LoginForm
+import dev.adryanev.dicodingstory.features.authentication.domain.entities.RegisterForm
 import dev.adryanev.dicodingstory.features.authentication.domain.entities.User
 import dev.adryanev.dicodingstory.features.story.domain.entities.Story
 import dev.adryanev.dicodingstory.services.locations.domain.entities.Location
+import dev.adryanev.dicodingstory.shared.domain.value_object.EmailAddress
+import dev.adryanev.dicodingstory.shared.domain.value_object.Password
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
@@ -55,7 +59,7 @@ fun createLoginFailed() = flow<Either<Failure, User>> {
     emit(Either.Left(NetworkFailure(message = "User Not Found", code = 400)))
 }
 
-fun createUser(): User = User(userId = "id", name = "user", token = "token")
+fun createUser(): User = User(userId = "user-12919931", name = "Yo mamen", token = "secret")
 
 fun createRegisterSuccess() = flow<Either<Failure, Unit>> {
     emit(Unit.right())
@@ -83,6 +87,15 @@ fun createLocationSuccess() = flow<Either<Failure, Location>> {
 
 fun createLocation() = Location(0.131214, 131.4113)
 
-suspend fun createFile() = withContext(Dispatchers.IO) {
+suspend fun createFile(): File = withContext(Dispatchers.IO) {
     File.createTempFile("test", "test")
 }
+
+fun createLoginForm() = LoginForm(EmailAddress("email@example.com"), Password("12345678"))
+fun createRegisterForm() = RegisterForm(
+    name = "Yo mamen",
+    emailAddress = EmailAddress("email@example.com"),
+    password = Password("12345678")
+)
+
+fun createLogoutResponse(): Either<Failure, Unit> = Unit.right()

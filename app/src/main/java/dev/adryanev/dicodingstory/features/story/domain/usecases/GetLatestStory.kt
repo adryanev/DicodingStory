@@ -9,11 +9,7 @@ import javax.inject.Inject
 class GetLatestStory @Inject constructor(
     private val storyRepository: StoryRepository
 ) {
-    suspend operator fun invoke(params: GetLatestStoryParams): Flow<PagingData<Story>> {
-        return storyRepository.getLatestStory(params.page)
+    suspend operator fun invoke(): Flow<PagingData<Story>> {
+        return storyRepository.getLatestStory()
     }
 }
-
-data class GetLatestStoryParams(
-    val page: Int?,
-)

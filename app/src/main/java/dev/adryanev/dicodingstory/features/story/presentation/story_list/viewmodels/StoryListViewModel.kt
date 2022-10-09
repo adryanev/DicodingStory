@@ -9,7 +9,6 @@ import arrow.core.Option
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.adryanev.dicodingstory.core.presentations.mvi.MviViewModel
 import dev.adryanev.dicodingstory.features.story.domain.usecases.GetLatestStory
-import dev.adryanev.dicodingstory.features.story.domain.usecases.GetLatestStoryParams
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
@@ -29,12 +28,12 @@ class StoryListViewModel @Inject constructor(
         latestStory()
     }
 
-    private fun latestStory(page: Int? = 1) {
+    private fun latestStory() {
 
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }
 
-            getLatestStory(GetLatestStoryParams(page)).cachedIn(viewModelScope)
+            getLatestStory().cachedIn(viewModelScope)
                 .collectLatest { either ->
 
                     _state.update {
@@ -54,7 +53,7 @@ class StoryListViewModel @Inject constructor(
             _state.update {
                 it.copy(isRefresh = true, isLoading = true)
             }
-            getLatestStory(GetLatestStoryParams(1)).cachedIn(viewModelScope)
+            getLatestStory().cachedIn(viewModelScope)
                 .collectLatest { either ->
 
                     _state.update {

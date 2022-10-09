@@ -8,7 +8,6 @@ import dev.adryanev.dicodingstory.core.utils.collectData
 import dev.adryanev.dicodingstory.core.utils.getOrAwaitValue
 import dev.adryanev.dicodingstory.core.utils.mock
 import dev.adryanev.dicodingstory.features.story.domain.usecases.GetLatestStory
-import dev.adryanev.dicodingstory.features.story.domain.usecases.GetLatestStoryParams
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert
 import org.junit.Before
@@ -29,12 +28,12 @@ class StoryListViewModelTest : BaseViewModelTest() {
     @Test
     fun getStorySuccess() {
         testCoroutineRule.runTest {
-            Mockito.`when`(getLatestStory.invoke(GetLatestStoryParams(1))).thenReturn(
+            Mockito.`when`(getLatestStory.invoke()).thenReturn(
                 createStoryPagingData()
             )
             launchTest {
                 systemUnderTest = StoryListViewModel(getLatestStory)
-                Mockito.verify(getLatestStory).invoke(GetLatestStoryParams(1))
+                Mockito.verify(getLatestStory).invoke()
                 val state = systemUnderTest.state.getOrAwaitValue()
                 val story = state.storyList.getOrElse { null }
                 Assert.assertNotNull(story)
@@ -50,13 +49,13 @@ class StoryListViewModelTest : BaseViewModelTest() {
     @Test
     fun refreshPage() {
         testCoroutineRule.runTest {
-            Mockito.`when`(getLatestStory.invoke(GetLatestStoryParams(1))).thenReturn(
+            Mockito.`when`(getLatestStory.invoke()).thenReturn(
                 createStoryPagingData()
             )
             launchTest {
                 systemUnderTest = StoryListViewModel(getLatestStory)
                 systemUnderTest.refreshPage()
-                Mockito.verify(getLatestStory).invoke(GetLatestStoryParams(1))
+                Mockito.verify(getLatestStory).invoke()
                 val state = systemUnderTest.state.getOrAwaitValue()
                 val story = state.storyList.getOrElse { null }
                 Assert.assertNotNull(story)
