@@ -31,7 +31,7 @@ class StoryMapsViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun getGetLatestStoryWithLocationSuccess() {
+    fun `should return story with location when success`() {
         testCoroutineRule.runTest {
             `when`(getLatestStoryWithLocation(NoParams)).thenReturn(createStoryDataSuccess())
 
@@ -59,7 +59,7 @@ class StoryMapsViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun getGetLatestStoryWithLocationFailed() {
+    fun `should return failure when failed`() {
         testCoroutineRule.runTest {
             `when`(getLatestStoryWithLocation(NoParams)).thenReturn(createStoryDataFailure())
 

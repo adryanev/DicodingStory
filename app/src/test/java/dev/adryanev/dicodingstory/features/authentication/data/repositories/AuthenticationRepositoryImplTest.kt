@@ -34,7 +34,7 @@ class AuthenticationRepositoryImplTest : BaseRepositoryTest() {
     }
 
     @Test
-    fun login() {
+    fun `should return User when login success`() {
         testCoroutineRule.runTest {
             `when`(remoteSource.loginUser(createLoginPayload())).thenReturn(
                 createLoginResponseSuccess()
@@ -66,7 +66,7 @@ class AuthenticationRepositoryImplTest : BaseRepositoryTest() {
     }
 
     @Test
-    fun register() {
+    fun `should return unit when register success`() {
         testCoroutineRule.runTest {
             `when`(remoteSource.registerUser(createRegisterPayload())).thenReturn(
                 createRegisterResponseSuccess()
@@ -91,7 +91,7 @@ class AuthenticationRepositoryImplTest : BaseRepositoryTest() {
     }
 
     @Test
-    fun logout() {
+    fun `should return unit when logout success`() {
         testCoroutineRule.runTest {
             `when`(localSource.removeLoginData()).thenReturn(
                 createLogoutResponse()
@@ -116,7 +116,7 @@ class AuthenticationRepositoryImplTest : BaseRepositoryTest() {
     }
 
     @Test
-    fun getLoggedInUser() {
+    fun `should return user when user is login`() {
         testCoroutineRule.runTest {
             `when`(localSource.getLoginData()).thenReturn(
                 createLoggedInResponse()

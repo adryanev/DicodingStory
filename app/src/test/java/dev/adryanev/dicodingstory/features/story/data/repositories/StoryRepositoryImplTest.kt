@@ -42,7 +42,7 @@ class StoryRepositoryImplTest : BaseRepositoryTest() {
     }
 
     @Test
-    fun getLatestStory() {
+    fun `should return story paging data when success`() {
         testCoroutineRule.runTest {
             launchTest {
                 val result = systemUnderTest.getLatestStory()
@@ -59,7 +59,7 @@ class StoryRepositoryImplTest : BaseRepositoryTest() {
     }
 
     @Test
-    fun addNewStory() {
+    fun `should return unit when success adding story`() {
         testCoroutineRule.runTest {
             val file = createFile()
             val payload = createAddStoryPayload()
@@ -86,7 +86,7 @@ class StoryRepositoryImplTest : BaseRepositoryTest() {
     }
 
     @Test
-    fun getLatestStoryWithLocation() {
+    fun `should return story with location when success`() {
         testCoroutineRule.runTest {
             `when`(storyRemoteSource.getStoriesWithLocation())
                 .thenReturn(createStoryDataResponse().right())
@@ -101,6 +101,10 @@ class StoryRepositoryImplTest : BaseRepositoryTest() {
                     val story = data.getOrElse { null }
                     assertNotNull(story)
                     assertEquals(story, createStory())
+
+                    story?.forEach {
+                        assertNotNull(it.location)
+                    }
 
                     expectNoEvents()
                 }

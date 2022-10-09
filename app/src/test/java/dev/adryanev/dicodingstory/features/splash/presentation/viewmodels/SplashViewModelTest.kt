@@ -18,21 +18,21 @@ import org.junit.Test
 import org.mockito.Mockito
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class SplashViewModelTest: BaseViewModelTest() {
+class SplashViewModelTest : BaseViewModelTest() {
 
     private lateinit var systemUnderTest: SplashViewModel
     private val getLoggedInUser = mock<GetLoggedInUser>()
     private lateinit var user: User
 
     @Before
-    fun setUp(){
+    fun setUp() {
         systemUnderTest = SplashViewModel(getLoggedInUser)
         user = createUser()
     }
 
 
     @Test
-    fun checkIsLoggedInUserFound() {
+    fun `should return user when user is logged in`() {
         testCoroutineRule.runTest {
             Mockito.`when`(getLoggedInUser(NoParams))
                 .thenReturn(createUserFound())
@@ -53,7 +53,7 @@ class SplashViewModelTest: BaseViewModelTest() {
     }
 
     @Test
-    fun checkIsLoggedInUserNotFound() {
+    fun `should return null when user is not logged in`() {
         testCoroutineRule.runTest {
             Mockito.`when`(getLoggedInUser(NoParams))
                 .thenReturn(createUserNotFound())

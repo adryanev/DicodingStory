@@ -37,7 +37,7 @@ class NewStoryViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun getUser() {
+    fun `should return user when success`() {
         // get the private method through reflections
         val method = systemUnderTest.javaClass.getDeclaredMethod("getUser")
         method.isAccessible = true
@@ -61,7 +61,7 @@ class NewStoryViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun setUser() {
+    fun `should set loggedInUser state when called`() {
         testCoroutineRule.runTest {
             Mockito.`when`(getLoggedInUser(NoParams)).thenReturn(createUserFound())
             launchTest {
@@ -86,7 +86,7 @@ class NewStoryViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun descriptionChanged() {
+    fun `should set description state when called`() {
         testCoroutineRule.runTest {
             launchTest {
                 val description = "Yo mamen"
@@ -99,7 +99,7 @@ class NewStoryViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun setStoryPicture() {
+    fun `should set storyPicture state when called`() {
         testCoroutineRule.runTest {
             launchTest {
                 val file = withContext(Dispatchers.IO) {
@@ -115,7 +115,7 @@ class NewStoryViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun uploadStory() {
+    fun `should return unit when story uploaded successfully`() {
         testCoroutineRule.runTest {
             Mockito.`when`(getLoggedInUser(NoParams)).thenReturn(createUserFound())
             Mockito.`when`(getCurrentLocation(NoParams)).thenReturn(createLocationSuccess())
@@ -179,7 +179,7 @@ class NewStoryViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun reset() {
+    fun `should reset state when called`() {
         testCoroutineRule.runTest {
             launchTest {
                 systemUnderTest.reset()
@@ -191,7 +191,7 @@ class NewStoryViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun getUserLocation() {
+    fun `should fetch user location when called`() {
         testCoroutineRule.runTest {
             Mockito.`when`(getCurrentLocation(NoParams)).thenReturn(createLocationSuccess())
             launchTest {
@@ -209,7 +209,7 @@ class NewStoryViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun setUserLocation() {
+    fun `should set userLocation state when called`() {
         testCoroutineRule.runTest {
             Mockito.`when`(getCurrentLocation(NoParams)).thenReturn(createLocationSuccess())
             launchTest {

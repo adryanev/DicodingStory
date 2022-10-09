@@ -33,7 +33,7 @@ class LoginFormViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun emailAddressChanged() {
+    fun `should set emailAddress state when called`() {
         testCoroutineRule.runTest {
             launchTest {
                 val email = "rywukafe@getnada.com"
@@ -46,7 +46,7 @@ class LoginFormViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun passwordChanged() {
+    fun `should set password state when called`() {
         testCoroutineRule.runTest {
             launchTest {
                 val password = "12345678"
@@ -59,7 +59,7 @@ class LoginFormViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun loginButtonPressedSuccess() {
+    fun `should return user when login success`() {
         testCoroutineRule.runTest {
             val email = "rywukafe@getnada.com"
             val password = "12345678"
@@ -94,7 +94,7 @@ class LoginFormViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun loginButtonPressedFailed() {
+    fun `should return failure when login failed`() {
         testCoroutineRule.runTest {
             val email = "rywukafe@getnada.com"
             val password = "12345678"

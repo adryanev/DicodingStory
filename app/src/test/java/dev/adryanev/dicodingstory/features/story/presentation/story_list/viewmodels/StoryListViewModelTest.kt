@@ -26,7 +26,7 @@ class StoryListViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun getStorySuccess() {
+    fun `should return story paging when success`() {
         testCoroutineRule.runTest {
             Mockito.`when`(getLatestStory.invoke()).thenReturn(
                 createStoryPagingData()
@@ -47,7 +47,7 @@ class StoryListViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun refreshPage() {
+    fun `should refresh story when success`() {
         testCoroutineRule.runTest {
             Mockito.`when`(getLatestStory.invoke()).thenReturn(
                 createStoryPagingData()

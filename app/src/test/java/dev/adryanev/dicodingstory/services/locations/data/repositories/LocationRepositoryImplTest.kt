@@ -28,7 +28,7 @@ class LocationRepositoryImplTest : BaseRepositoryTest() {
     }
 
     @Test
-    fun getCurrentLocation() {
+    fun `should return current location when success`() {
         testCoroutineRule.runTest {
             `when`(googleLocationDataSource.locationFlow()).thenReturn(
                 createLocationFlow()

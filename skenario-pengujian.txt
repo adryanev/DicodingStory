@@ -2,43 +2,44 @@ Unit Test:
 
 - View Model:
     - Splash View Model
-        - checkIsLoggedInUserFound
-        - checkIsLoggedInUserNotFound
+        - should return user when user is logged in
+        - should return null when user is not logged in
     - Login View Model
-        - emailAddressChanged
-        - passwordChanged
-        - loginButtonPressedSuccess
-        - loginButtonPressedFailed
+        - should set emailAddress state when called
+        - should set password state when called
+        - should return user when login success
+        - should return failure when login failed
     - Register View Model
-        - emailAddressChanged
-        - passwordChanged
-        - nameChanged
-        - registerButtonPressedSuccess
-        - registerButtonPressedFailed
+        - should set emailAddress state when called
+        - should set password state when called
+        - should set name state when called
+        - should return unit when register success
+        - should return failure when register failed
     - Story List View Model
-        - getStorySuccess
-        - refreshPage
+        - should return story paging when success
+        - should refresh story when success`(
     - Story Maps View Model
-        - getGetLatestStoryWithLocationSuccess
-        - getGetLatestStoryWithLocationFailed
+        - should return story with location when success
+        - should return failure when failed
     - New Story View Model
-        - getUser
-        - setUser
-        - descriptionChanged
-        - setStoryPicture
-        - uploadStory
-        - reset
-        - getUserLocation
-        - setUserLocation
+        - should return user when success
+        - should set loggedInUser state when called
+        - should set description state when called
+        - should set storyPicture state when called`
+        - should return unit when story uploaded successfully
+        - should reset state when called
+        - should fetch user location when called
+        - should set userLocation state when called
 
 - Repositories
     - Authentication Repository
-        - login
-        - logout
-        - getLoggedInUser
+        - should return User when login success
+        - should return unit when register success
+        - should return unit when logout success
+        - should return user when user is login
     - Location Repository
-        - getCurrentLocation
+        - should return current location when success
     - Story Repository
-        - getLatestStory
-        - addNewStory
-        - getLatestStoryWithLocation
+        - should return story paging data when success
+        - should return unit when success adding story
+        - should return story with location when success

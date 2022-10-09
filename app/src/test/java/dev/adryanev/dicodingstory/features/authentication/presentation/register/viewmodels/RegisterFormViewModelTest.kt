@@ -15,7 +15,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.mockito.MockedConstruction.MockInitializer
 import org.mockito.Mockito
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -30,7 +29,7 @@ class RegisterFormViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun emailAddressChanged() {
+    fun `should set emailAddress state when called`() {
         testCoroutineRule.runTest {
             launchTest {
                 val email = "rywukafe@getnada.com"
@@ -43,7 +42,7 @@ class RegisterFormViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun passwordChanged() {
+    fun `should set password state when called`() {
         testCoroutineRule.runTest {
             launchTest {
                 val password = "12345678"
@@ -56,7 +55,7 @@ class RegisterFormViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun nameChanged() {
+    fun `should set name state when called`() {
         testCoroutineRule.runTest {
             launchTest {
                 val name = "Adryan Eka Vandra"
@@ -69,7 +68,7 @@ class RegisterFormViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun registerButtonPressedSuccess() {
+    fun `should return unit when register success`() {
         testCoroutineRule.runTest {
             val email = "rywukafe@getnada.com"
             val password = "12345678"
@@ -107,7 +106,7 @@ class RegisterFormViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun registerButtonPressedFailed() {
+    fun `should return failure when register failed`() {
         testCoroutineRule.runTest {
             val email = "rywukafe@getnada.com"
             val password = "12345678"
