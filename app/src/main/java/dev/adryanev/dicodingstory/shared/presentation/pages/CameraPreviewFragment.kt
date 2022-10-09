@@ -153,7 +153,7 @@ class CameraPreviewFragment : Fragment() {
                     val msg = "Photo capture succeeded"
                     requireContext().showToast(msg)
                     Timber.d(msg)
-                    viewModel.setStroyPicture(photoFile)
+                    viewModel.setStoryPicture(photoFile)
                     navigateBack()
                 }
             })

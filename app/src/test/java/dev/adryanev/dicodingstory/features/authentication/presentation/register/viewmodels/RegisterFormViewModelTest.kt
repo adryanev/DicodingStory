@@ -15,6 +15,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import org.mockito.MockedConstruction.MockInitializer
 import org.mockito.Mockito
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -73,14 +74,15 @@ class RegisterFormViewModelTest : BaseViewModelTest() {
             val email = "rywukafe@getnada.com"
             val password = "12345678"
             val name = "Adryan Eka Vandra"
+            val registerForm = RegisterForm(
+                name,
+                EmailAddress(email),
+                Password(password)
+            )
             Mockito.`when`(
                 registerUser(
                     RegisterUserParams(
-                        RegisterForm(
-                            name,
-                            EmailAddress(email),
-                            Password(password)
-                        )
+                        registerForm
                     )
                 )
             ).thenReturn(createRegisterSuccess())
@@ -91,6 +93,7 @@ class RegisterFormViewModelTest : BaseViewModelTest() {
                 systemUnderTest.nameChanged(name)
 
                 systemUnderTest.registerButtonPressed()
+                Mockito.verify(registerUser).invoke(RegisterUserParams(registerForm))
 
                 val state = systemUnderTest.state.getOrAwaitValue()
 
@@ -109,14 +112,15 @@ class RegisterFormViewModelTest : BaseViewModelTest() {
             val email = "rywukafe@getnada.com"
             val password = "12345678"
             val name = "Adryan Eka Vandra"
+            val registerForm = RegisterForm(
+                name,
+                EmailAddress(email),
+                Password(password)
+            )
             Mockito.`when`(
                 registerUser(
                     RegisterUserParams(
-                        RegisterForm(
-                            name,
-                            EmailAddress(email),
-                            Password(password)
-                        )
+                        registerForm
                     )
                 )
             ).thenReturn(createRegisterFailure())
@@ -127,6 +131,8 @@ class RegisterFormViewModelTest : BaseViewModelTest() {
                 systemUnderTest.nameChanged(name)
 
                 systemUnderTest.registerButtonPressed()
+
+                Mockito.verify(registerUser).invoke(RegisterUserParams(registerForm))
 
                 val state = systemUnderTest.state.getOrAwaitValue()
 

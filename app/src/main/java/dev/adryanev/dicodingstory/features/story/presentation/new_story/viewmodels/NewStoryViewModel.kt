@@ -72,7 +72,7 @@ class NewStoryViewModel @Inject constructor(
 
     }
 
-    fun setStroyPicture(
+    fun setStoryPicture(
         picture: File
     ) {
         _state.update {
@@ -145,7 +145,7 @@ class NewStoryViewModel @Inject constructor(
         }
     }
 
-    fun getUserLocation(){
+    fun getUserLocation() {
         viewModelScope.launch {
             getCurrentLocation(NoParams).collectLatest { either ->
                 _state.update {
@@ -155,7 +155,7 @@ class NewStoryViewModel @Inject constructor(
         }
     }
 
-    fun setUserLocation(location: Location){
+    fun setUserLocation(location: Location) {
         _state.update { it.copy(userLocation = location) }
     }
 

@@ -6,25 +6,29 @@ import arrow.core.left
 import arrow.core.right
 import dev.adryanev.dicodingstory.core.domain.failures.Failure
 import dev.adryanev.dicodingstory.core.domain.failures.NetworkFailure
+import dev.adryanev.dicodingstory.core.domain.failures.SharedPreferenceFailure
 import dev.adryanev.dicodingstory.features.authentication.domain.entities.User
 import dev.adryanev.dicodingstory.features.story.domain.entities.Story
 import dev.adryanev.dicodingstory.services.locations.domain.entities.Location
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
+import java.io.File
 import java.time.ZonedDateTime
 
 fun createStoryPagingData() = flow {
-    emit(PagingData.from(expectedStoryResult()))
+    emit(PagingData.from(createStory()))
 }
 
 fun createStoryDataSuccess() = flow<Either<Failure, List<Story>>> {
-    emit(Either.Right(expectedStoryResult()))
+    emit(Either.Right(createStory()))
 }
 
 fun createStoryDataFailure() = flow<Either<Failure, List<Story>>> {
     emit(Either.Left(NetworkFailure(message = "Not found", code = 404)))
 }
 
-fun expectedStoryResult(): List<Story> = listOf(
+fun createStory(): List<Story> = listOf(
     Story(
         id = "121",
         name = "Hello",
@@ -59,4 +63,26 @@ fun createRegisterSuccess() = flow<Either<Failure, Unit>> {
 
 fun createRegisterFailure() = flow<Either<Failure, Unit>> {
     emit(NetworkFailure(message = "User Already Exist", code = 400).left())
+}
+
+fun createLogoutSuccess() = flow<Either<Failure, Unit>> {
+    emit(Unit.right())
+}
+
+fun createLogoutFailure() = flow<Either<Failure, Unit>> {
+    emit(SharedPreferenceFailure("Cannot logoutUser").left())
+}
+
+fun createStorySuccess() = flow<Either<Failure, Unit>> {
+    emit(Unit.right())
+}
+
+fun createLocationSuccess() = flow<Either<Failure, Location>> {
+    emit(createLocation().right())
+}
+
+fun createLocation() = Location(0.131214, 131.4113)
+
+suspend fun createFile() = withContext(Dispatchers.IO) {
+    File.createTempFile("test", "test")
 }

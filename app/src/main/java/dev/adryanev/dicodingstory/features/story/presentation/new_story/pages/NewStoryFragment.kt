@@ -50,7 +50,7 @@ class NewStoryFragment : Fragment(), MviView<NewStoryState> {
                 val selectedImg: Uri = result.data?.data as Uri
                 val file = uriToFile(selectedImg, requireContext())
 
-                viewModel.setStroyPicture(file)
+                viewModel.setStoryPicture(file)
             }
         }
     private val requestLocationPermissionLauncher = registerForActivityResult(

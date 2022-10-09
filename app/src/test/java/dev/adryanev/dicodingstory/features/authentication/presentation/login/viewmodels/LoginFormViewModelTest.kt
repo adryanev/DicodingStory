@@ -63,13 +63,14 @@ class LoginFormViewModelTest : BaseViewModelTest() {
         testCoroutineRule.runTest {
             val email = "rywukafe@getnada.com"
             val password = "12345678"
+            val loginForm = LoginForm(
+                EmailAddress(email),
+                Password(password)
+            )
             Mockito.`when`(
                 loggedInUser(
                     LogInUserParams(
-                        LoginForm(
-                            EmailAddress(email),
-                            Password(password)
-                        )
+                        loginForm
                     )
                 )
             ).thenReturn(createLoginSuccess())
@@ -80,6 +81,7 @@ class LoginFormViewModelTest : BaseViewModelTest() {
 
                 systemUnderTest.loginButtonPressed()
 
+                Mockito.verify(loggedInUser).invoke(LogInUserParams(loginForm))
                 val state = systemUnderTest.state.getOrAwaitValue()
 
                 val either = state.loginResult.getOrElse { null }
@@ -96,13 +98,14 @@ class LoginFormViewModelTest : BaseViewModelTest() {
         testCoroutineRule.runTest {
             val email = "rywukafe@getnada.com"
             val password = "12345678"
+            val loginForm = LoginForm(
+                EmailAddress(email),
+                Password(password)
+            )
             Mockito.`when`(
                 loggedInUser(
                     LogInUserParams(
-                        LoginForm(
-                            EmailAddress(email),
-                            Password(password)
-                        )
+                        loginForm
                     )
                 )
             ).thenReturn(createLoginFailed())
@@ -112,6 +115,7 @@ class LoginFormViewModelTest : BaseViewModelTest() {
                 systemUnderTest.passwordChanged(password)
 
                 systemUnderTest.loginButtonPressed()
+                Mockito.verify(loggedInUser).invoke(LogInUserParams(loginForm))
 
                 val state = systemUnderTest.state.getOrAwaitValue()
 
