@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +24,6 @@ import dev.adryanev.dicodingstory.core.utils.createFile
 import dev.adryanev.dicodingstory.databinding.FragmentCameraPreviewBinding
 import dev.adryanev.dicodingstory.features.story.presentation.new_story.viewmodels.NewStoryViewModel
 import timber.log.Timber
-import java.util.concurrent.ExecutorService
 
 /**
  * An example full-screen fragment that shows and hides the system UI (i.e.
@@ -33,7 +33,7 @@ class CameraPreviewFragment : Fragment() {
 
     private var _binding: FragmentCameraPreviewBinding? = null
     private val binding: FragmentCameraPreviewBinding
-        get() = _binding!!
+        get() = _binding ?: throw UninitializedPropertyAccessException()
 
     private val viewModel: NewStoryViewModel by activityViewModels()
 
@@ -112,7 +112,9 @@ class CameraPreviewFragment : Fragment() {
             }
 
             // Select back camera as a default
-            imageCapture = ImageCapture.Builder().build()
+            imageCapture = ImageCapture.Builder()
+                .setTargetResolution(Size(1080, 1920))
+                .build()
             try {
                 // Unbind use cases before rebinding
                 cameraProvider.unbindAll()
@@ -151,7 +153,7 @@ class CameraPreviewFragment : Fragment() {
                     val msg = "Photo capture succeeded"
                     requireContext().showToast(msg)
                     Timber.d(msg)
-                    viewModel.setStroyPicture(photoFile)
+                    viewModel.setStoryPicture(photoFile)
                     navigateBack()
                 }
             })

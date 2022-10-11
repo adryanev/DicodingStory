@@ -18,7 +18,8 @@ data class NewStoryState(
     val loggedInUser: User?,
     val storyPicture: File?,
     val errorMessage: OneTimeEvent<String>?,
-    val createNewStory: Option<Either<Failure, Unit>>
+    val createNewStory: Option<Either<Failure, Unit>>,
+    val userLocation: Location?
 
 ) : MviViewState {
     companion object {
@@ -30,7 +31,8 @@ data class NewStoryState(
             loggedInUser = null,
             storyPicture = null,
             errorMessage = null,
-            createNewStory = none()
+            createNewStory = none(),
+            userLocation = null
         )
     }
 }

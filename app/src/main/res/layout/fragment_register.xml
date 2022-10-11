@@ -45,7 +45,7 @@
                 android:layout_height="match_parent"
                 android:paddingStart="40dp"
                 android:paddingEnd="40dp"
-                android:textColorHint="#757575"
+                android:textColorHint="@color/text_input_hint"
                 android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -138,7 +138,7 @@
                 android:inputType="textPersonName"
                 android:paddingStart="40dp"
                 android:paddingEnd="40dp"
-                android:textColorHint="#757575"
+                android:textColorHint="@color/text_input_hint"
                 android:textSize="16sp"
 
                 />

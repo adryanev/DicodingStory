@@ -1,5 +1,6 @@
 package dev.adryanev.dicodingstory.core.di
 
+import androidx.paging.PagingConfig
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -14,7 +15,6 @@ import dev.adryanev.dicodingstory.core.utils.connectivity.ConnectivityUtils
 import dev.adryanev.dicodingstory.core.utils.resource.ResourceProvider
 import dev.adryanev.dicodingstory.features.authentication.data.datasources.remote.services.AuthenticationService
 import dev.adryanev.dicodingstory.features.story.data.datasources.remote.services.AuthenticatedStoryService
-import dev.adryanev.dicodingstory.features.story.data.datasources.remote.services.GuestStoryService
 import retrofit2.Retrofit
 import retrofit2.create
 import javax.inject.Singleton
@@ -40,12 +40,6 @@ object ApplicationModule {
 
     @Singleton
     @Provides
-    fun provideGuestStoryServices(@PublicRetrofit retrofit: Retrofit): GuestStoryService =
-        retrofit.create()
-
-
-    @Singleton
-    @Provides
     fun provideMiddlewareProvider(
         resourceProvider: ResourceProvider,
         connectivityUtils: ConnectivityUtils
@@ -56,4 +50,8 @@ object ApplicationModule {
                 connectivityUtils = connectivityUtils
             )
         ).build()
+
+    @Singleton
+    @Provides
+    fun providePagingConfig(): PagingConfig = PagingConfig(pageSize = 10)
 }

@@ -5,6 +5,7 @@ import android.content.Context
 import android.location.Location
 import android.os.Looper
 import com.google.android.gms.location.*
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -14,7 +15,7 @@ import javax.inject.Singleton
 
 @Singleton
 class GoogleLocationDataSource @Inject constructor(
-    context: Context
+    @ApplicationContext context: Context
 ) {
     companion object {
         private const val LOCATION_REQUEST_INTERVAL = 10000L

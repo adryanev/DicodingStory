@@ -5,7 +5,6 @@ import arrow.core.Option
 import arrow.core.none
 import dev.adryanev.dicodingstory.core.domain.failures.Failure
 import dev.adryanev.dicodingstory.core.presentations.mvi.MviViewState
-import dev.adryanev.dicodingstory.core.utils.OneTimeEvent
 import dev.adryanev.dicodingstory.features.authentication.domain.entities.User
 import dev.adryanev.dicodingstory.shared.domain.value_object.EmailAddress
 import dev.adryanev.dicodingstory.shared.domain.value_object.Password

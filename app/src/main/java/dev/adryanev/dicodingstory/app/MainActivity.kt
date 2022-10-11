@@ -9,7 +9,7 @@ import dev.adryanev.dicodingstory.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding: ActivityMainBinding
-        get() = _binding!!
+        get() = _binding ?: throw UninitializedPropertyAccessException()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

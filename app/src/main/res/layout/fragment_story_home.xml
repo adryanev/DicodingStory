@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".features.story.presentation.story_home.pages.StoryHomeFragment">
+
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/story_home_toolbar"
+            style="@style/Widget.Material3.Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="?colorPrimary"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+            app:titleTextColor="?colorOnPrimary" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/story_home_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?colorPrimary"
+            app:tabSelectedTextColor="?colorSecondary"
+            app:tabTextColor="?colorOnPrimary"
+            style="@style/Widget.Material3.TabLayout"
+            app:tabPaddingStart="8dp"
+            app:tabPaddingEnd="8dp"
+            android:clipToPadding="false"
+            app:tabMinWidth="64dp"
+            app:tabMode="scrollable" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/story_home_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+
+        />
+
+</LinearLayout>

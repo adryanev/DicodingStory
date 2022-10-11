@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="story_image_transition">StoryImageTransition</string>
-    <string name="story_author_transition">StoryAuthorTransition</string>
-    <string name="story_description_transition">StoryDescriptionTransition</string>
-    <string name="story_coordinate_transition">StoryCoordinateTransition</string>
-    <string name="story_date_transition">StoryDateTransition</string>
-    <string name="detail_story_image_transition">DetailStoryImageTransition</string>
-    <string name="detail_story_author_transition">DetailStoryAuthorTransition</string>
-    <string name="detail_story_description_transition">DetailStoryDescriptionTransition</string>
-    <string name="detail_story_coordinate_transition">DetailStoryCoordinateTransition</string>
-    <string name="detail_story_date_transition">DetailStoryDateTransition</string>
+    <string name="story_image_transition" translatable="false">StoryImageTransition</string>
+    <string name="story_author_transition" translatable="false">StoryAuthorTransition</string>
+    <string name="story_description_transition" translatable="false">StoryDescriptionTransition</string>
+    <string name="story_coordinate_transition" translatable="false">StoryCoordinateTransition</string>
+    <string name="story_date_transition" translatable="false">StoryDateTransition</string>
+    <string name="detail_story_image_transition" translatable="false">DetailStoryImageTransition</string>
+    <string name="detail_story_author_transition" translatable="false">DetailStoryAuthorTransition</string>
+    <string name="detail_story_description_transition" translatable="false">DetailStoryDescriptionTransition</string>
+    <string name="detail_story_coordinate_transition" translatable="false">DetailStoryCoordinateTransition</string>
+    <string name="detail_story_date_transition" translatable="false">DetailStoryDateTransition</string>
 </resources>

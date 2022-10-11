@@ -1,14 +1,17 @@
 package dev.adryanev.dicodingstory.features.story.presentation.new_story.pages
 
+import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.Intent.ACTION_GET_CONTENT
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -37,7 +40,7 @@ class NewStoryFragment : Fragment(), MviView<NewStoryState> {
 
     private var _binding: FragmentNewStoryBinding? = null
     private val binding: FragmentNewStoryBinding
-        get() = _binding!!
+        get() = _binding ?: throw UninitializedPropertyAccessException()
 
     private val viewModel: NewStoryViewModel by activityViewModels()
 
@@ -46,9 +49,34 @@ class NewStoryFragment : Fragment(), MviView<NewStoryState> {
             if (result.resultCode == RESULT_OK) {
                 val selectedImg: Uri = result.data?.data as Uri
                 val file = uriToFile(selectedImg, requireContext())
-                viewModel.setStroyPicture(file)
+
+                viewModel.setStoryPicture(file)
             }
         }
+    private val requestLocationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
+                // Precise location access granted.
+                getMyLastLocation()
+            }
+            permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
+                // Only approximate location access granted.
+                getMyLastLocation()
+            }
+            else -> {
+                // No location access granted.
+                requireContext().showToast("No Location Permission granted")
+            }
+        }
+    }
+
+    private fun checkPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(), permission
+        ) == PackageManager.PERMISSION_GRANTED
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -74,6 +102,9 @@ class NewStoryFragment : Fragment(), MviView<NewStoryState> {
             newStoryUploadButton.setSingleClick {
                 viewModel.uploadStory()
             }
+            newStoryGetCoordinates.setSingleClick {
+                getMyLastLocation()
+            }
         }
         val navController = findNavController()
         val appBarConfiguration = AppBarConfiguration(navController.graph)
@@ -83,6 +114,19 @@ class NewStoryFragment : Fragment(), MviView<NewStoryState> {
             .into(binding.newStoryPreviewImage)
 
         return binding.root
+    }
+
+    private fun getMyLastLocation() {
+        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            viewModel.getUserLocation()
+        } else {
+            requestLocationPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        }
     }
 
     private fun startGallery() {
@@ -160,10 +204,22 @@ class NewStoryFragment : Fragment(), MviView<NewStoryState> {
                 navigateToStoryList()
             })
         })
+
+        state.getUserLocation.fold({}, { either ->
+            either.fold({ failure -> requireContext().handleError(failure) }, {
+                viewModel.setUserLocation(it)
+            })
+        })
+
+        if (state.userLocation != null) {
+            binding.newStoryCoordinates.text = getString(
+                R.string.coordinates, state.userLocation.latitude, state.userLocation.longitude
+            )
+        }
     }
 
     private fun navigateToStoryList() {
-        findNavController().navigate(NewStoryFragmentDirections.actionNewStoryFragmentToStoryFragment())
+        findNavController().navigate(NewStoryFragmentDirections.actionNewStoryFragmentToStoryHomeFragment())
     }
 
     override fun onDestroyView() {

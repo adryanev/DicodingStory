@@ -17,7 +17,6 @@ import okio.BufferedSource
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
 import javax.net.ssl.SSLException
-import javax.net.ssl.SSLHandshakeException
 
 /**
  * @param middlewares list of customizable [NetworkMiddleware] that would returns its error
@@ -70,7 +69,6 @@ fun Throwable.parseException(
     return when (this) {
         is SocketTimeoutException -> TimeOutFailure
         is SSLException -> SslFailure
-        is SSLHandshakeException -> SslFailure
         is HttpException -> {
             val errorService = adapter.parseError(response()?.errorBody()?.source())
             if (errorService != null) {

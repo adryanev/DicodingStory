@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.adryanev.dicodingstory.BuildConfig
 import dev.adryanev.dicodingstory.core.di.annotations.AuthInterceptorOkHttp
 import dev.adryanev.dicodingstory.core.di.annotations.NonAuthInterceptorOkHttp
 import dev.adryanev.dicodingstory.core.di.annotations.PrivateRetrofit
@@ -27,46 +28,41 @@ object NetworkModule {
     @Singleton
     @Provides
     @NonAuthInterceptorOkHttp
-    fun provideOkHttpWithoutAuth(): OkHttpClient = OkHttpClient.Builder()
-        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-        .addNetworkInterceptor(StethoInterceptor())
-        .build()
+    fun provideOkHttpWithoutAuth(): OkHttpClient = OkHttpClient.Builder().addInterceptor(
+            if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+            } else {
+                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)
+            }
+        ).addNetworkInterceptor(StethoInterceptor()).build()
 
     @Singleton
     @Provides
     @AuthInterceptorOkHttp
     fun provideOkHttpWithAuth(authInterceptor: AuthInterceptor): OkHttpClient =
-        OkHttpClient.Builder()
-            .addInterceptor(authInterceptor)
-            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-            .addNetworkInterceptor(StethoInterceptor())
-            .build()
+        OkHttpClient.Builder().addInterceptor(authInterceptor).addInterceptor(
+                if (BuildConfig.DEBUG) {
+                    HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+                } else {
+                    HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)
+                }
+            ).addNetworkInterceptor(StethoInterceptor()).build()
 
     @Singleton
     @Provides
     @PublicRetrofit
     fun providePublicRetrofit(
-        @NonAuthInterceptorOkHttp okHttp: OkHttpClient,
-        moshi: Moshi
-    ): Retrofit =
-        Retrofit.Builder()
-            .client(okHttp)
-            .baseUrl(NetworkConstants.BASE_URL)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .build()
+        @NonAuthInterceptorOkHttp okHttp: OkHttpClient, moshi: Moshi
+    ): Retrofit = Retrofit.Builder().client(okHttp).baseUrl(NetworkConstants.BASE_URL)
+        .addConverterFactory(MoshiConverterFactory.create(moshi)).build()
 
     @Singleton
     @Provides
     @PrivateRetrofit
     fun providePrivateRetrofit(
-        @AuthInterceptorOkHttp okHttp: OkHttpClient,
-        moshi: Moshi
-    ): Retrofit =
-        Retrofit.Builder()
-            .client(okHttp)
-            .baseUrl(NetworkConstants.BASE_URL)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .build()
+        @AuthInterceptorOkHttp okHttp: OkHttpClient, moshi: Moshi
+    ): Retrofit = Retrofit.Builder().client(okHttp).baseUrl(NetworkConstants.BASE_URL)
+        .addConverterFactory(MoshiConverterFactory.create(moshi)).build()
 
     @Singleton
     @Provides

@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import dev.adryanev.dicodingstory.R
@@ -18,7 +18,7 @@ class StoryListAdapter(
     private val listener: (
         transitionElement: Map<View, String>, story: Story
     ) -> Unit
-) : ListAdapter<Story, StoryItemViewHolder>(StoryDiffCallback()) {
+) : PagingDataAdapter<Story, StoryItemViewHolder>(StoryDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoryItemViewHolder {
         val holder = StoryItemViewHolder(
             FragmentStoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -43,17 +43,19 @@ class StoryListAdapter(
                 ViewCompat.setTransitionName(
                     itemStoryDescription, context.getString(R.string.story_description_transition)
                 )
-                listener.invoke(
-                    mapOf(
-                        itemStoryImage to context.getString(
-                            R.string.detail_story_image_transition
-                        ),
-                        itemStoryAuthor to context.getString(R.string.detail_story_author_transition),
-                        itemStoryLocation to context.getString(R.string.detail_story_coordinate_transition),
-                        itemStoryCreatedDate to context.getString(R.string.detail_story_date_transition),
-                        itemStoryDescription to context.getString(R.string.detail_story_description_transition)
-                    ), getItem(holder.bindingAdapterPosition)
-                )
+                getItem(holder.bindingAdapterPosition)?.let {
+                    listener.invoke(
+                        mapOf(
+                            itemStoryImage to context.getString(
+                                R.string.detail_story_image_transition
+                            ),
+                            itemStoryAuthor to context.getString(R.string.detail_story_author_transition),
+                            itemStoryLocation to context.getString(R.string.detail_story_coordinate_transition),
+                            itemStoryCreatedDate to context.getString(R.string.detail_story_date_transition),
+                            itemStoryDescription to context.getString(R.string.detail_story_description_transition)
+                        ), it
+                    )
+                }
             }
 
         }
@@ -61,7 +63,7 @@ class StoryListAdapter(
     }
 
     override fun onBindViewHolder(holder: StoryItemViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        getItem(position)?.let { holder.bind(it) }
 
     }
 }

@@ -1,7 +1,5 @@
 package dev.adryanev.dicodingstory.core.presentations.mvi
 
-import androidx.navigation.NavDirections
-
 /**
  * Object representing a UI that will
  * a) emit its intents to a view model,

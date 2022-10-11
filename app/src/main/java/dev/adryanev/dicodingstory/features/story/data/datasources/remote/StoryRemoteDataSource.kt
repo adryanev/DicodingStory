@@ -8,10 +8,12 @@ import dev.adryanev.dicodingstory.features.story.data.models.StoryResponse
 import java.io.File
 
 interface StoryRemoteDataSource {
-    suspend fun getStories(): Either<Failure, StoryResponse>
+    suspend fun getStories(page: Int?, size: Int? = 10): Either<Failure, StoryResponse>
 
-    suspend fun addStory(payload: CreateStoryPayload, photo: File): Either<Failure, CreateStoryResponse>
+    suspend fun addStory(
+        payload: CreateStoryPayload,
+        photo: File
+    ): Either<Failure, CreateStoryResponse>
 
-    suspend fun addStoryAsGuest(payload: CreateStoryPayload, photo: File): Either<Failure, CreateStoryResponse>
-
+    suspend fun getStoriesWithLocation(): Either<Failure, StoryResponse>
 }

@@ -14,6 +14,8 @@ import dev.adryanev.dicodingstory.features.authentication.data.datasources.remot
 import dev.adryanev.dicodingstory.features.authentication.data.datasources.remote.AuthenticationRemoteDataSourceImpl
 import dev.adryanev.dicodingstory.features.authentication.data.repositories.AuthenticationRepositoryImpl
 import dev.adryanev.dicodingstory.features.authentication.domain.repositories.AuthenticationRepository
+import dev.adryanev.dicodingstory.features.story.data.datasources.local.StoryLocalDataSource
+import dev.adryanev.dicodingstory.features.story.data.datasources.local.StoryLocalDataSourceImpl
 import dev.adryanev.dicodingstory.features.story.data.datasources.remote.StoryRemoteDataSource
 import dev.adryanev.dicodingstory.features.story.data.datasources.remote.StoryRemoteDataSourceImpl
 import dev.adryanev.dicodingstory.features.story.data.repositories.StoryRepositoryImpl
@@ -66,6 +68,12 @@ abstract class BindingModule {
     abstract fun bindStoryRemoteSource(
         storyRemoteDataSource: StoryRemoteDataSourceImpl
     ): StoryRemoteDataSource
+
+    @Singleton
+    @Binds
+    abstract fun bindStoryLocalSource(
+        storyLocalDataSourceImpl: StoryLocalDataSourceImpl
+    ): StoryLocalDataSource
 
     @Singleton
     @Binds

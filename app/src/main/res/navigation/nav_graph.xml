@@ -17,8 +17,8 @@
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_splashFragment_to_storyFragment"
-            app:destination="@id/storyFragment"
+            android:id="@+id/action_splashFragment_to_storyHomeFragment"
+            app:destination="@id/storyHomeFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:launchSingleTop="true"
@@ -37,7 +37,7 @@
             app:destination="@id/registerFragment" />
         <action
             android:id="@+id/action_loginFragment_to_storyFragment"
-            app:destination="@id/storyFragment" />
+            app:destination="@id/storyHomeFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -47,19 +47,7 @@
         android:id="@+id/storyFragment"
         android:name="dev.adryanev.dicodingstory.features.story.presentation.story_list.pages.StoryFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_story_list">
-        <action
-            android:id="@+id/action_storyFragment_to_newStoryFragment"
-            app:destination="@id/newStoryFragment" />
-        <action
-            android:id="@+id/action_storyFragment_to_storyDetailFragment"
-            app:destination="@id/storyDetailFragment" />
-        <action
-            android:id="@+id/action_storyFragment_to_loginFragment"
-            app:destination="@id/loginFragment"
-            app:popUpTo="@id/storyFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
+        tools:layout="@layout/fragment_story_list" />
     <fragment
         android:id="@+id/newStoryFragment"
         android:name="dev.adryanev.dicodingstory.features.story.presentation.new_story.pages.NewStoryFragment"
@@ -69,8 +57,8 @@
             android:id="@+id/action_newStoryFragment_to_cameraPreviewFragment"
             app:destination="@id/cameraPreviewFragment" />
         <action
-            android:id="@+id/action_newStoryFragment_to_storyFragment"
-            app:destination="@id/storyFragment"
+            android:id="@+id/action_newStoryFragment_to_storyHomeFragment"
+            app:destination="@id/storyHomeFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/newStoryFragment"
             app:popUpToInclusive="true" />
@@ -89,5 +77,28 @@
         android:name="dev.adryanev.dicodingstory.shared.presentation.pages.CameraPreviewFragment"
         android:label="fragment_camera_preview"
         tools:layout="@layout/fragment_camera_preview" />
+    <fragment
+        android:id="@+id/storyHomeFragment"
+        android:name="dev.adryanev.dicodingstory.features.story.presentation.story_home.pages.StoryHomeFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_story_home">
+        <action
+            android:id="@+id/action_storyHomeFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/storyHomeFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_storyHomeFragment_to_newStoryFragment"
+            app:destination="@id/newStoryFragment" />
+        <action
+            android:id="@+id/action_storyHomeFragment_to_storyDetailFragment"
+            app:destination="@id/storyDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/storyMapsFragment"
+        android:name="dev.adryanev.dicodingstory.features.story.presentation.story_maps.pages.StoryMapsFragment"
+        android:label="fragment_story_maps"
+        tools:layout="@layout/fragment_story_maps" />
 
 </navigation>

@@ -17,6 +17,8 @@ import dev.adryanev.dicodingstory.features.authentication.domain.usecases.GetLog
 import dev.adryanev.dicodingstory.features.story.domain.entities.StoryForm
 import dev.adryanev.dicodingstory.features.story.domain.usecases.CreateNewStory
 import dev.adryanev.dicodingstory.features.story.domain.usecases.CreateNewStoryParams
+import dev.adryanev.dicodingstory.services.locations.domain.entities.Location
+import dev.adryanev.dicodingstory.services.locations.domain.usecases.GetCurrentLocation
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
@@ -29,6 +31,7 @@ class NewStoryViewModel @Inject constructor(
     private val getLoggedInUser: GetLoggedInUser,
     private val createNewStory: CreateNewStory,
     private val resourceProvider: ResourceProvider,
+    private val getCurrentLocation: GetCurrentLocation,
 ) : ViewModel(), MviViewModel<NewStoryState> {
 
     private val _state = MutableStateFlow(NewStoryState.initial())
@@ -69,7 +72,7 @@ class NewStoryViewModel @Inject constructor(
 
     }
 
-    fun setStroyPicture(
+    fun setStoryPicture(
         picture: File
     ) {
         _state.update {
@@ -82,6 +85,7 @@ class NewStoryViewModel @Inject constructor(
     fun uploadStory() {
         val picture = _state.value.storyPicture
         val description = _state.value.description
+        val location = _state.value.userLocation
 
         if (picture == null) {
             _state.update {
@@ -117,7 +121,7 @@ class NewStoryViewModel @Inject constructor(
                 CreateNewStoryParams(
                     StoryForm(
                         description = description,
-                        location = null,
+                        location = location,
                         photo = picture
                     )
                 )
@@ -139,6 +143,20 @@ class NewStoryViewModel @Inject constructor(
         _state.update {
             NewStoryState.initial()
         }
+    }
+
+    fun getUserLocation() {
+        viewModelScope.launch {
+            getCurrentLocation(NoParams).collectLatest { either ->
+                _state.update {
+                    it.copy(getUserLocation = Option.fromNullable(either))
+                }
+            }
+        }
+    }
+
+    fun setUserLocation(location: Location) {
+        _state.update { it.copy(userLocation = location) }
     }
 
 
